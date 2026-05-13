@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone View</title>
+    <meta name="description"
+        content="Portfolio fotografico e video realizzato con DJI Mini 4K. Esplora il mondo dall'alto.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <a href="index.html" class="logo">DRONE VIEW</a>
+                <button class="nav-toggle" aria-label="Toggle menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links">
+                    <li><a href="#gallery">Galleria</a></li>
+                    <li><a href="pages/flotta.html">Flotta</a></li>
+                    <li><a href="#contact">Contatti</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content reveal reveal-up">
+            <span class="hero-tagline">Esplorando l'orizzonte</span>
+            <h1>Prospettive Elevate</h1>
+            <p>Catturando la bellezza del mondo da un punto di vista unico.</p>
+            <a href="#gallery" class="btn"
+                style="padding: 1rem 2.5rem; background: var(--accent-gradient); color: white; text-decoration: none; border-radius: 50px; font-weight: 600; display: inline-block;">Esplora
+                Lavori</a>
+        </div>
+    </header>
+
+    <!-- Cinematic Video Break -->
+    <section class="video-break">
+        <video muted playsinline id="bg-video" autoplay loop>
+            <source src="assets/video/DroneLanding.mp4" type="video/mp4">
+            Il tuo browser non supporta i video.
+        </video>
+        <div class="video-overlay reveal reveal-up">
+            <h2>4K Ultra HD</h2>
+            <p>Dettagli incredibili in ogni pixel.</p>
+        </div>
+    </section>
+
+    <section id="gallery" class="section">
+        <div class="container">
+            <div class="section-header reveal reveal-up">
+                <h2 class="section-title">Galleria Fotografica</h2>
+                <p style="color: var(--text-secondary)">Una collezione di scatti aerei in 4K.</p>
+            </div>
+            <div class="grid" style="grid-template-columns: 1fr; max-width: 600px; margin: 0 auto;">
+                <a href="pages/zante.html" class="gallery-item reveal reveal-left">
+                    <img src="assets/images/Place/Zante.avif" alt="Zante - Navagio Beach">
+                    <div class="gallery-overlay">
+                        <h3>Zante</h3>
+                        <p>Esplora la bellezza ionica.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section">
+        <div class="container">
+            <div style="background: var(--card-bg); padding: 4rem; border-radius: 40px; border: 1px solid var(--glass-border); backdrop-filter: blur(20px); display: flex; align-items: center; gap: 4rem;"
+                class="reveal reveal-up">
+                <div style="flex: 1;" class="reveal reveal-left">
+                    <h2 class="section-title">Scopri la mia flotta</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 2.5rem;">Dettagli tecnici e potenzialità del
+                        DJI Mini 4K. Scopri come questo drone ultra-leggero cattura immagini cinematografiche.</p>
+                    <a href="pages/flotta.html" class="btn"
+                        style="padding: 1.2rem 3rem; background: var(--accent-gradient); color: white; text-decoration: none; border-radius: 50px; font-weight: 700; display: inline-block; box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);">Visualizza
+                        la Flotta</a>
+                </div>
+                <div style="flex: 1; border-radius: 30px; overflow: hidden; height: 300px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);"
+                    class="reveal reveal-right">
+                    <img src="assets/images/Flotta.jpg" alt="DJI Drone in Flight"
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" style="padding: 100px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
+        <div class="container reveal reveal-up">
+            <h2>Decolla con me</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Hai bisogno di scatti aerei per il tuo
+                progetto?</p>
+            <a href="mailto:mattia.bracco05@gmail.com"
+                style="color: var(--accent-color); font-size: 1.5rem; text-decoration: none; font-weight: 700;">mattia.bracco05@gmail.com</a>
+            <div class="social-icons">
+                <a href="https://github.com/mattiabracco05" target="_blank" class="trapdoor">
+                    <span class="username">@mattiabracco05</span>
+                    <span class="door top"><i class="fab fa-github"></i></span>
+                    <span class="door bottom"><i class="fab fa-github"></i></span>
+                </a>
+                <a href="https://www.instagram.com/matti_bracco" target="_blank" class="trapdoor">
+                    <span class="username">@matti_bracco</span>
+                    <span class="door top"><i class="fab fa-instagram"></i></span>
+                    <span class="door bottom"><i class="fab fa-instagram"></i></span>
+                </a>
+                <a href="https://www.threads.com/@matti_bracco" target="_blank" class="trapdoor">
+                    <span class="username">@matti_bracco</span>
+                    <span class="door top"><i class="fab fa-threads"></i></span>
+                    <span class="door bottom"><i class="fab fa-threads"></i></span>
+                </a>
+            </div>
+            <p style="margin-top: 4rem; font-size: 0.8rem; color: var(--text-secondary)">&copy; 2024 Drone View. All
+                rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

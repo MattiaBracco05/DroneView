@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone View</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .zante-hero {
+            height: 80vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../assets/images/Place/VallePo.jpg') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: var(--nav-height);
+            position: relative;
+            overflow: hidden;
+            background-attachment: fixed;
+        }
+
+        /* Drone HUD Overlay */
+        .hud-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            border: 20px solid transparent;
+            box-sizing: border-box;
+        }
+
+        .hud-corner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--accent-color);
+            opacity: 0.5;
+        }
+
+        .top-left {
+            top: 40px;
+            left: 40px;
+            border-right: 0;
+            border-bottom: 0;
+        }
+
+        .top-right {
+            top: 40px;
+            right: 40px;
+            border-left: 0;
+            border-bottom: 0;
+        }
+
+        .bottom-left {
+            bottom: 40px;
+            left: 40px;
+            border-right: 0;
+            border-top: 0;
+        }
+
+        .bottom-right {
+            bottom: 40px;
+            right: 40px;
+            border-left: 0;
+            border-top: 0;
+        }
+
+        .hud-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .hud-center::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -10px;
+            width: 120px;
+            height: 1px;
+            background: rgba(0, 210, 255, 0.3);
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+        }
+
+        .video-card {
+            grid-column: span 2;
+            border-radius: 30px;
+            overflow: hidden;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            position: relative;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 450px;
+            border-radius: 30px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            margin-top: 3rem;
+            filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <a href="../index.html" class="logo">DRONE VIEW</a>
+                <button class="nav-toggle" aria-label="Toggle menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links">
+                    <li><a href="../index.html#gallery">Galleria</a></li>
+                    <li><a href="flotta.html">Flotta</a></li>
+                    <li><a href="../index.html#contact">Contatti</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="zante-hero">
+        <div class="hud-overlay">
+            <div class="hud-corner top-left"></div>
+            <div class="hud-corner top-right"></div>
+            <div class="hud-corner bottom-left"></div>
+            <div class="hud-corner bottom-right"></div>
+            <div class="hud-center"></div>
+        </div>
+        <div class="container reveal reveal-up" style="position: relative; z-index: 10;">
+            <span
+                style="text-transform: uppercase; letter-spacing: 5px; color: var(--accent-color); font-weight: 700;">Missione:
+                Alpi Occidentali</span>
+            <h1 style="font-size: clamp(3rem, 10vw, 6rem); line-height: 1;">VALLE PO</h1>
+            <p style="font-size: 1.5rem; opacity: 0.8; margin-top: 1rem;">Alle pendici del maestoso Monviso.</p>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header reveal reveal-up">
+                <h2 class="section-title">Galleria Valle Po</h2>
+                <p style="color: var(--text-secondary)">Riprese montane effettuate in Piemonte con DJI Mini 4K.</p>
+            </div>
+
+            <div class="media-grid">
+                <div class="video-card reveal reveal-up" style="aspect-ratio: 16/9;">
+                    <video width="100%" height="100%"
+                        src="https://assets.mixkit.co/videos/preview/mixkit-flying-over-a-large-mountain-range-in-the-snow-34440-large.mp4"
+                        autoplay loop muted playsinline style="object-fit: cover;"></video>
+                    <div class="gallery-overlay" style="pointer-events: none;">
+                        <h3>Vetta Innevata</h3>
+                    </div>
+                </div>
+                <div class="gallery-item reveal reveal-left reveal-delay-1">
+                    <img src="https://images.unsplash.com/photo-1544839095-cf566874838b?q=80&w=2070&auto=format&fit=crop"
+                        alt="Monviso Peak">
+                    <div class="gallery-overlay">
+                        <h3>Il Monviso</h3>
+                        <p>Re di Pietra</p>
+                    </div>
+                </div>
+                <div class="gallery-item reveal reveal-right reveal-delay-2">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2070&auto=format&fit=crop"
+                        alt="Alpine Forest">
+                    <div class="gallery-overlay">
+                        <h3>Boschi Alpini</h3>
+                        <p>Valle Po</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 100px;" class="reveal reveal-up">
+                <h2 class="section-title">Localizzazione</h2>
+                <p style="color: var(--text-secondary)">Area delle riprese nelle valli piemontesi.</p>
+                <div class="map-container reveal reveal-up">
+                    <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                        src="https://maps.google.com/maps?q=Valle%20Po,Piemonte,Italia&t=&z=11&ie=UTF8&iwloc=&output=embed"
+                        style="border:0;">
+                    </iframe>
+                </div>
+
+                <div class="stats-container reveal reveal-up">
+                    <h3 style="margin-bottom: 0.5rem;"><i class="fas fa-clipboard-list"
+                            style="color: var(--accent-color);"></i> Log di Volo: Missione Valle Po</h3>
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th>Parametro</th>
+                                <th>Dato Registrato</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><i class="fas fa-route"></i> Distanza Totale</td>
+                                <td>28.3 km</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-clock"></i> Tempo di Volo</td>
+                                <td>2h 45m</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-mountain"></i> Altitudine Max</td>
+                                <td>500 m (Agl)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="padding: 50px 0; text-align: center; border-top: 1px solid var(--glass-border);">
+        <a href="../index.html" style="color: var(--accent-color); text-decoration: none; font-weight: 600;">&larr;
+            Riatterra alla base</a>
+        <div class="social-icons" style="margin-bottom: 2rem; margin-top: 2rem;">
+            <a href="https://github.com/mattiabracco05" target="_blank" class="trapdoor">
+                <span class="username">@mattiabracco05</span>
+                <span class="door top"><i class="fab fa-github"></i></span>
+                <span class="door bottom"><i class="fab fa-github"></i></span>
+            </a>
+            <a href="https://www.instagram.com/matti_bracco" target="_blank" class="trapdoor">
+                <span class="username">@matti_bracco</span>
+                <span class="door top"><i class="fab fa-instagram"></i></span>
+                <span class="door bottom"><i class="fab fa-instagram"></i></span>
+            </a>
+            <a href="https://www.threads.com/@matti_bracco" target="_blank" class="trapdoor">
+                <span class="username">@matti_bracco</span>
+                <span class="door top"><i class="fab fa-threads"></i></span>
+                <span class="door bottom"><i class="fab fa-threads"></i></span>
+            </a>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script>
+        // Drone Tilt Effect
+        const hero = document.querySelector('.zante-hero');
+        hero.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            const x = (clientX / window.innerWidth - 0.5) * 10;
+            const y = (clientY / window.innerHeight - 0.5) * 10;
+            hero.style.backgroundPosition = `${50 + x}% ${50 + y}%`;
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone View</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .drone-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .hero-mini {
+            padding-top: 150px;
+            background: radial-gradient(circle at top right, rgba(0, 210, 255, 0.1), transparent 40%);
+        }
+
+        .badge {
+            background: var(--accent-gradient);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <a href="../index.html" class="logo">DRONE VIEW</a>
+                <button class="nav-toggle" aria-label="Toggle menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links">
+                    <li><a href="../index.html#gallery">Galleria</a></li>
+                    <li><a href="flotta.html" style="color: var(--accent-color)">Flotta</a></li>
+                    <li><a href="../index.html#contact">Contatti</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="hero-mini">
+        <div class="container">
+            <div class="drone-showcase">
+                <div class="reveal reveal-left">
+                    <span class="badge">Ultra Leggero</span>
+                    <h1 style="font-size: 4rem; margin-bottom: 1.5rem;">DJI Mini 4K</h1>
+                    <p style="color: var(--text-secondary); font-size: 1.2rem; margin-bottom: 2.5rem;">
+                        La massima potenza racchiusa in meno di 249 grammi. Il compagno perfetto per ogni avventura,
+                        capace di catturare ogni dettaglio in 4K Ultra HD.
+                    </p>
+                    <div class="specs-grid" style="grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+                        <div class="feature-card reveal reveal-up reveal-delay-1">
+                            <h4 style="color: var(--accent-color); font-size: 0.8rem;">CAMERA</h4>
+                            <p style="font-size: 1.4rem; font-weight: 700;">4K / 30fps</p>
+                        </div>
+                        <div class="feature-card reveal reveal-up reveal-delay-2">
+                            <h4 style="color: var(--accent-color); font-size: 0.8rem;">CATEGORIA</h4>
+                            <p style="font-size: 1.4rem; font-weight: 700;">C0</p>
+                        </div>
+                        <div class="feature-card reveal reveal-up reveal-delay-3">
+                            <h4 style="color: var(--accent-color); font-size: 0.8rem;">PESO</h4>
+                            <p style="font-size: 1.4rem; font-weight: 700;">
+                                < 249g</p>
+                        </div>
+                        <div class="feature-card reveal reveal-up reveal-delay-4">
+                            <h4 style="color: var(--accent-color); font-size: 0.8rem;">RESISTENZA VENTO</h4>
+                            <p style="font-size: 1.4rem; font-weight: 700;">Livello 5</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="position: relative;" class="reveal reveal-right">
+                    <!-- Reliable Foldable Grey Drone Photo -->
+                    <div
+                        style="width: 100%; aspect-ratio: 1; background: radial-gradient(rgba(0, 210, 255, 0.2), transparent 70%); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: float 6s ease-in-out infinite;">
+                        <img src="../assets/images/DjiMini4K.png" alt="DJI Mini 4K"
+                            style="width: 100%; border-radius: 30px; transform: rotate(-5deg); filter: drop-shadow(0 20px 50px rgba(0,0,0,0.6)); object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+
+            <section class="section" style="padding-top: 50px;">
+                <div class="section-header reveal reveal-up">
+                    <h2 class="section-title">Tecnologia Avanzata</h2>
+                </div>
+                <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="feature-card reveal reveal-up reveal-delay-1">
+                        <h3>Gimbal a 3 Assi</h3>
+                        <p style="color: var(--text-secondary); margin-top: 1rem;">Stabilizzazione meccanica fluida per
+                            video cinematografici, indipendentemente dalle condizioni di volo.</p>
+                    </div>
+                    <div class="feature-card reveal reveal-up reveal-delay-2">
+                        <h3>Trasmissione Video</h3>
+                        <p style="color: var(--text-secondary); margin-top: 1rem;">OcuSync 2.0 permette una trasmissione
+                            video HD stabile fino a 10 km di distanza.</p>
+                    </div>
+                    <div class="feature-card reveal reveal-up reveal-delay-3">
+                        <h3>QuickShots</h3>
+                        <p style="color: var(--text-secondary); margin-top: 1rem;">Dronie, Helix, Rocket, Circle e
+                            Boomerang per scatti complessi con un solo tocco.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" style="padding-top: 50px;">
+                <div class="section-header reveal reveal-up">
+                    <h2 class="section-title">Accessori Essenziali</h2>
+                    <p style="color: var(--text-secondary)">Il setup completo per sessioni di volo senza interruzioni.
+                    </p>
+                </div>
+                <div class="grid" style="grid-template-columns: 1fr;">
+                    <div class="feature-card reveal reveal-up"
+                        style="display: flex; align-items: center; gap: 2rem; max-width: 600px; margin: 0 auto;">
+                        <div style="font-size: 3rem;">🔋</div>
+                        <div>
+                            <h3>DJI Charging Hub</h3>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">Carica in sequenza fino a 3
+                                batterie. Può essere usato come powerbank per caricare i tuoi dispositivi mobili durante
+                                le escursioni.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer style="padding: 50px 0; text-align: center; border-top: 1px solid var(--glass-border); margin-top: 100px;">
+        <a href="../index.html"
+            style="color: var(--accent-color); text-decoration: none; font-weight: 600; display: block; margin-bottom: 1rem;">&larr;
+            Riatterra alla base</a>
+        <div class="social-icons" style="margin-bottom: 2rem; margin-top: 2rem;">
+            <a href="https://github.com/mattiabracco05" target="_blank" class="trapdoor">
+                <span class="username">@mattiabracco05</span>
+                <span class="door top"><i class="fab fa-github"></i></span>
+                <span class="door bottom"><i class="fab fa-github"></i></span>
+            </a>
+            <a href="https://www.instagram.com/matti_bracco" target="_blank" class="trapdoor">
+                <span class="username">@matti_bracco</span>
+                <span class="door top"><i class="fab fa-instagram"></i></span>
+                <span class="door bottom"><i class="fab fa-instagram"></i></span>
+            </a>
+            <a href="https://www.threads.com/@matti_bracco" target="_blank" class="trapdoor">
+                <span class="username">@matti_bracco</span>
+                <span class="door top"><i class="fab fa-threads"></i></span>
+                <span class="door bottom"><i class="fab fa-threads"></i></span>
+            </a>
+        </div>
+        <p style="color: var(--text-secondary)">&copy; 2024 Drone View. DJI Mini 4K Specialist.</p>
+    </footer>
+
+    <style>
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-30px);
+            }
+        }
+    </style>
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
