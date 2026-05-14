@@ -101,6 +101,43 @@ body {
     font-family: 'Outfit', sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
+    cursor: none; /* Nasconde il cursore di sistema */
+}
+
+/* Custom Drone Cursor */
+.custom-cursor {
+    width: 30px;
+    height: 30px;
+    position: fixed;
+    pointer-events: none;
+    z-index: 10001;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s, transform 0.1s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-cursor svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 5px var(--accent-color));
+}
+
+.custom-cursor.hover {
+    width: 45px;
+    height: 45px;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* Hide custom cursor on mobile */
+@media (max-width: 1024px) {
+    body {
+        cursor: auto;
+    }
+    .custom-cursor {
+        display: none;
+    }
 }
 
 /* Typography */
@@ -140,6 +177,8 @@ nav {
     font-size: 1.5rem;
     cursor: pointer;
     z-index: 1100;
+    padding: 0.5rem; /* Aumenta l'area di clic */
+    transition: var(--transition);
 }
 
 .nav-container {
@@ -368,6 +407,36 @@ nav {
     font-weight: 600;
 }
 
+/* Feature Highlight (used in index.html) */
+.feature-highlight {
+    background: var(--card-bg);
+    padding: 4rem;
+    border-radius: 40px;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.feature-highlight-content {
+    flex: 1;
+}
+
+.feature-highlight-image {
+    flex: 1;
+    border-radius: 30px;
+    overflow: hidden;
+    height: 300px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.feature-highlight-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 /* Animations */
 @keyframes fadeInUp {
     from {
@@ -430,6 +499,14 @@ nav {
     }
 
     .nav-links a {
+        font-size: 1.5rem;
+    }
+
+    .nav-container {
+        padding: 0;
+    }
+
+    .logo {
         font-size: 1.5rem;
     }
 
@@ -772,5 +849,24 @@ nav {
     .stats-table th, .stats-table td {
         padding: 0.8rem;
         font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .feature-highlight {
+        flex-direction: column;
+        padding: 2.5rem 1.5rem;
+        gap: 2rem;
+        text-align: center;
+    }
+
+    .feature-highlight-content {
+        order: 2;
+    }
+
+    .feature-highlight-image {
+        order: 1;
+        width: 100%;
+        height: 250px;
     }
 }

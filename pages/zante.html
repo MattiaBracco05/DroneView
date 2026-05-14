@@ -116,6 +116,94 @@
             margin-top: 3rem;
             filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);
         }
+
+        @media (max-width: 768px) {
+            .gallery-overlay {
+                padding: 1rem 1.5rem !important;
+                background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%) !important;
+            }
+
+            .gallery-overlay h3 {
+                font-size: 1.2rem !important;
+            }
+
+            .gallery-overlay p {
+                font-size: 0.9rem !important;
+            }
+        }
+
+        /* Category Groups */
+        .category-group {
+            margin-bottom: 5rem;
+        }
+
+        .category-header {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .category-main {
+            margin-bottom: 2rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .extra-content {
+            display: none;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .extra-content.active {
+            display: grid;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .expand-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            transition: var(--transition);
+            display: block;
+            margin: 2rem auto 0;
+        }
+
+        .expand-btn:hover {
+            border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+
+            .category-grid,
+            .extra-content {
+                grid-template-columns: 1fr !important;
+            }
+
+            .category-main .video-card,
+            .category-main .gallery-item {
+                aspect-ratio: 16/9;
+            }
+        }
     </style>
 </head>
 
@@ -162,63 +250,95 @@
                     greca.</p>
             </div>
 
-            <div class="media-grid">
-                <div class="video-card" style="aspect-ratio: 16/9;">
-                    <video width="100%" height="100%" src="../assets/Zante/QS_River.mp4" autoplay loop muted playsinline
-                        style="object-fit: cover;"></video>
-                    <div class="gallery-overlay" style="pointer-events: none;">
-                        <h3>Porto Limniosas View</h3>
+            <div class="gallery-categories">
+                <!-- Category 1: Porto Limniosas -->
+                <div class="category-group reveal reveal-up">
+                    <div class="category-main">
+                        <div class="video-card" style="aspect-ratio: 16/9;">
+                            <video width="100%" height="100%" src="../assets/Zante/QS_River.mp4" autoplay loop muted
+                                playsinline style="object-fit: cover;"></video>
+                            <div class="gallery-overlay" style="pointer-events: none;">
+                                <h3>Porto Limniosas View</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-grid">
+                        <div class="gallery-item">
+                            <img src="../assets/Zante/River01.jpg" alt="Porto Limniosas 01">
+                        </div>
+                        <div class="gallery-item">
+                            <img src="../assets/Zante/River02.jpg" alt="Porto Limniosas 02">
+                        </div>
+                    </div>
+                    <div class="extra-content">
+                        <div class="gallery-item">
+                            <img src="../assets/Zante/River03.jpg" alt="Porto Limniosas 03">
+                        </div>
+                        <div class="gallery-item">
+                            <img src="../assets/Zante/Parking.jpg" alt="Porto Limniosas 04">
+                        </div>
+                    </div>
+                    <button class="expand-btn">Mostra altro</button>
+                </div>
+
+                <!-- Category 2: Rock Formations -->
+                <div class="category-group reveal reveal-up">
+                    <div class="category-main">
+                        <div class="gallery-item">
+                            <img src="../assets/Zante/Rock01.jpg" alt="White Sand Stone">
+                            <div class="gallery-overlay">
+                                <h3>White Sand Stone</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-grid">
+                        <div class="gallery-item">
+                            <img src="../assets/Zante/Rock02.jpg" alt="Rock Formation 02">
+                        </div>
+                        <div class="gallery-item">
+                            <img src="../assets/Zante/Rock03.jpg" alt="Rock Formation 03">
+                        </div>
+                    </div>
+                    <div class="extra-content">
+                        <div class="gallery-item">
+                            <img src="../assets/Zante/Rock04.jpg" alt="Rock Formation 04">
+                        </div>
+                    </div>
+                    <button class="expand-btn">Mostra altro</button>
+                </div>
+
+                <!-- Category 3: Iconic Spots -->
+                <div class="category-group reveal reveal-up">
+                    <div class="category-main">
+                        <div class="video-card" style="aspect-ratio: 16/9;">
+                            <video width="100%" height="100%" src="../assets/Zante/CameoIsland.mp4" autoplay loop muted
+                                playsinline style="object-fit: cover;"></video>
+                            <div class="gallery-overlay" style="pointer-events: none;">
+                                <h3>Cameo Island</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-grid">
+                        <div class="gallery-item">
+                            <img src="../assets/Zante/Navagio.jpg" alt="Navagio Beach">
+                            <div class="gallery-overlay">
+                                <h3>Navagio</h3>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="../assets/Zante/City.jpg" alt="Zante City">
+                            <div class="gallery-overlay">
+                                <h3>City</h3>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="gallery-item">
-                    <img src="../assets/Zante/River01.jpg" alt="Navagio Beach">
-                </div>
-                <div class="gallery-item">
-                    <img src="../assets/Zante/River02.jpg" alt="Blue Caves">
-                </div>
-                <div class="gallery-item">
-                    <img src="../assets/Zante/River03.jpg" alt="Blue Caves">
-                </div>
-                <div class="gallery-item">
-                    <img src="../assets/Zante/Parking.jpg" alt="Blue Caves">
-                </div>
+            </div>
+
+            <div class="category-main reveal reveal-up" style="margin-top: 5rem;">
                 <div class="video-card" style="aspect-ratio: 16/9;">
-                    <video width="100%" height="100%" src="../assets/Zante/CameoIsland.mp4" autoplay loop muted
+                    <video width="100%" height="100%" src="../assets/Zante/QS_House.mp4" autoplay loop muted
                         playsinline style="object-fit: cover;"></video>
-                    <div class="gallery-overlay" style="pointer-events: none;">
-                        <h3>Cameo Island</h3>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../assets/Zante/Rock01.jpg" alt="Blue Caves">
-                    <div class="gallery-overlay">
-                        <h3>White Sand Stone</h3>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../assets/Zante/Rock02.jpg" alt="Blue Caves">
-                </div>
-                <div class="gallery-item">
-                    <img src="../assets/Zante/Rock03.jpg" alt="Blue Caves">
-                </div>
-                <div class="gallery-item">
-                    <img src="../assets/Zante/Rock04.jpg" alt="Blue Caves">
-                </div>
-                <div class="gallery-item">
-                    <img src="../assets/Zante/Navagio.jpg" alt="Blue Caves">
-                    <div class="gallery-overlay">
-                        <h3>Navagio</h3>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../assets/Zante/City.jpg" alt="Blue Caves">
-                    <div class="gallery-overlay">
-                        <h3>City</h3>
-                    </div>
-                </div>
-                <div class="video-card" style="aspect-ratio: 16/9;">
-                    <video width="100%" height="100%" src="../assets/Zante/QS_House.mp4" autoplay loop muted playsinline
-                        style="object-fit: cover;"></video>
                     <div class="gallery-overlay" style="pointer-events: none;">
                         <h3>House View</h3>
                     </div>
@@ -289,6 +409,21 @@
 
     <script src="../js/script.js"></script>
     <script>
+        // Category Expand/Collapse logic
+        document.querySelectorAll('.category-group').forEach(group => {
+            const btn = group.querySelector('.expand-btn');
+            const extra = group.querySelector('.extra-content');
+
+            btn.addEventListener('click', () => {
+                const isActive = extra.classList.toggle('active');
+                btn.textContent = isActive ? 'Mostra meno' : 'Mostra altro';
+
+                if (!isActive) {
+                    group.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
         // Drone Tilt Effect
         const hero = document.querySelector('.zante-hero');
         hero.addEventListener('mousemove', (e) => {

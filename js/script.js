@@ -11,6 +11,43 @@ overlay.innerHTML = `
 `;
 document.body.appendChild(overlay);
 
+// Initialize everything
+document.addEventListener('DOMContentLoaded', () => {
+    initNav();
+    initReveal();
+    initCustomCursor();
+});
+
+// Custom Drone Cursor
+function initCustomCursor() {
+    if (window.innerWidth <= 1024) return;
+
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    cursor.innerHTML = `
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="12" fill="#00d2ff"/>
+            <path d="M20 20 L80 80 M80 20 L20 80" stroke="#00d2ff" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="20" cy="20" r="8" fill="none" stroke="#00d2ff" stroke-width="3"/>
+            <circle cx="80" cy="20" r="8" fill="none" stroke="#00d2ff" stroke-width="3"/>
+            <circle cx="20" cy="80" r="8" fill="none" stroke="#00d2ff" stroke-width="3"/>
+            <circle cx="80" cy="80" r="8" fill="none" stroke="#00d2ff" stroke-width="3"/>
+        </svg>
+    `;
+    document.body.appendChild(cursor);
+
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
+
+    const interactiveElements = document.querySelectorAll('a, button, .gallery-item, .accessory-card, .feature-card, .trapdoor');
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+}
+
 window.addEventListener("DOMContentLoaded", () => {
     document.body.style.opacity = "1";
     setTimeout(() => overlay.classList.remove('active'), 500);
@@ -296,8 +333,6 @@ const initNav = () => {
         });
     });
 };
-
-initNav();
 
 initNav();
 
