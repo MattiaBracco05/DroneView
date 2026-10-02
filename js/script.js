@@ -16,7 +16,169 @@ document.addEventListener('DOMContentLoaded', () => {
     initNav();
     initReveal();
     initCustomCursor();
+    initLazyLoading();
+    initHeroParticles();
+    initVideoHudPlayers();
 });
+
+const initVideoHudPlayers = () => {
+    document.querySelectorAll('.video-hud-player').forEach((card) => {
+        if (card.dataset.hudInitialized === 'true') return;
+        card.dataset.hudInitialized = 'true';
+
+        const video = card.querySelector('video');
+        const toggle = card.querySelector('.video-toggle');
+        const progress = card.querySelector('.video-progress');
+        const progressBar = card.querySelector('.video-progress-bar');
+        const fullscreen = card.querySelector('.video-fullscreen');
+        const liveBadge = card.querySelector('.live-badge');
+
+        if (!video || !toggle || !progress || !progressBar) return;
+
+        const updateHud = () => {
+            const pct = video.duration ? (video.currentTime / video.duration) * 100 : 0;
+            progressBar.style.width = pct + '%';
+            const isPaused = video.paused;
+            toggle.innerHTML = isPaused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
+            toggle.setAttribute('aria-label', isPaused ? 'Play video' : 'Pause video');
+            if (liveBadge) {
+                liveBadge.classList.toggle('muted', isPaused);
+                if (isPaused) {
+                    liveBadge.innerHTML = '<span class="live-dot"></span> PAUSED';
+                } else {
+                    liveBadge.innerHTML = '<span class="live-dot"></span> LIVE';
+                }
+            }
+        };
+
+        const togglePlayback = async () => {
+            if (!video) return;
+            if (video.paused) {
+                try {
+                    await video.play();
+                } catch (error) {
+                    console.warn('Video play blocked:', error);
+                }
+            } else {
+                video.pause();
+            }
+            updateHud();
+        };
+
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            togglePlayback();
+        });
+
+        video.addEventListener('click', togglePlayback);
+        video.addEventListener('timeupdate', updateHud);
+        video.addEventListener('play', updateHud);
+        video.addEventListener('pause', updateHud);
+        video.addEventListener('loadedmetadata', updateHud);
+
+        progress.addEventListener('click', (e) => {
+            if (!video.duration) return;
+            const rect = progress.getBoundingClientRect();
+            const ratio = (e.clientX - rect.left) / rect.width;
+            video.currentTime = ratio * video.duration;
+            updateHud();
+        });
+
+        if (fullscreen) {
+            fullscreen.addEventListener('click', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                try {
+                    if (!document.fullscreenElement) {
+                        await card.requestFullscreen();
+                    } else {
+                        await document.exitFullscreen();
+                    }
+                } catch (error) {
+                    console.warn('Fullscreen unavailable:', error);
+                }
+            });
+        }
+
+        updateHud();
+    });
+};
+
+const initHeroParticles = () => {
+    const canvas = document.getElementById('hero-particles');
+    if (!canvas) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const ctx = canvas.getContext('2d');
+    const particles = [];
+    const particleCount = Math.min(70, Math.max(28, Math.round(window.innerWidth / 18)));
+
+    const resizeCanvas = () => {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = Math.max(1, Math.floor(rect.width * window.devicePixelRatio));
+        canvas.height = Math.max(1, Math.floor(rect.height * window.devicePixelRatio));
+        canvas.style.width = rect.width + 'px';
+        canvas.style.height = rect.height + 'px';
+        ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+    };
+
+    const createParticle = () => ({
+        x: Math.random() * canvas.clientWidth,
+        y: Math.random() * canvas.clientHeight,
+        radius: Math.random() * 2.1 + 0.5,
+        alpha: Math.random() * 0.7 + 0.15,
+        dx: (Math.random() - 0.5) * 0.35,
+        dy: (Math.random() - 0.5) * 0.35,
+        hue: Math.random() > 0.5 ? 190 : 210
+    });
+
+    const initParticles = () => {
+        particles.length = 0;
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(createParticle());
+        }
+    };
+
+    const draw = () => {
+        ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+
+        particles.forEach((particle) => {
+            particle.x += particle.dx;
+            particle.y += particle.dy;
+
+            if (particle.x < 0 || particle.x > canvas.clientWidth) particle.dx *= -1;
+            if (particle.y < 0 || particle.y > canvas.clientHeight) particle.dy *= -1;
+
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `hsla(${particle.hue}, 100%, 70%, ${particle.alpha})`;
+            ctx.fill();
+        });
+
+        requestAnimationFrame(draw);
+    };
+
+    resizeCanvas();
+    initParticles();
+    draw();
+
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        initParticles();
+    }, { passive: true });
+};
+
+const initLazyLoading = () => {
+    document.querySelectorAll('.gallery-item img, .hud-preview-popup img, .popup-media img').forEach(img => {
+        if (img.hasAttribute('loading')) return;
+        img.setAttribute('loading', 'lazy');
+        img.setAttribute('decoding', 'async');
+        img.setAttribute('fetchpriority', 'low');
+    });
+};
 
 // Custom Drone Cursor
 function initCustomCursor() {
@@ -317,19 +479,30 @@ const initLightbox = () => {
     // Keyboard navigation (ESC + Arrows)
     window.addEventListener('keydown', (e) => {
         if (!lb.classList.contains('active')) return;
-        if (e.key === 'Escape') closeLB(false);
-        if (e.key === 'ArrowLeft') showPrev();
-        if (e.key === 'ArrowRight') showNext();
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            closeLB(false);
+        }
+        if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            showPrev();
+        }
+        if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            showNext();
+        }
     });
 
     // Touch swipe support
-    let touchStartX = 0;
+    let touchStartX = null;
     lb.addEventListener('touchstart', (e) => {
         touchStartX = e.changedTouches[0].screenX;
     }, { passive: true });
 
     lb.addEventListener('touchend', (e) => {
+        if (touchStartX === null) return;
         const diff = touchStartX - e.changedTouches[0].screenX;
+        touchStartX = null;
         if (Math.abs(diff) > 50) {
             if (diff > 0) showNext();
             else showPrev();
@@ -579,9 +752,9 @@ const initCounterAnimation = () => {
 
     const animateCounter = (element) => {
         const target = parseFloat(element.dataset.counter);
-        const suffix = element.dataset.counterSuffix || '';
+        const suffix = element.dataset.suffix || '';
         const decimals = (target % 1 !== 0) ? (target.toString().split('.')[1] || '').length : 0;
-        const duration = 2000;
+        const duration = 1800;
         const startTime = performance.now();
 
         element.textContent = '0' + suffix;
@@ -589,11 +762,11 @@ const initCounterAnimation = () => {
         const update = (currentTime) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            // Ease out cubic
             const eased = 1 - Math.pow(1 - progress, 3);
             const current = target * eased;
 
-            element.textContent = current.toFixed(decimals) + suffix;
+            const displayValue = decimals > 0 ? current.toFixed(decimals) : Math.round(current);
+            element.textContent = displayValue + suffix;
 
             if (progress < 1) {
                 requestAnimationFrame(update);

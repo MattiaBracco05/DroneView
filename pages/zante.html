@@ -4,207 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drone View</title>
+    <title>Drone View | Missione Zante</title>
+    <meta name="description" content="Missione Zante: foto e video aerei dall'isola greca con drone, panorami mozzafiato e dettagli cinematografici.">
+    <meta name="theme-color" content="#050505">
+    <meta property="og:title" content="Drone View | Missione Zante">
+    <meta property="og:description" content="Missione Zante: foto e video aerei dall'isola greca con drone, panorami mozzafiato e dettagli cinematografici.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.droneview.it/pages/zante.html">
+    <meta property="og:image" content="https://www.droneview.it/assets/Zante/images/Navagio.avif">
+    <link rel="canonical" href="https://www.droneview.it/pages/zante.html">
+    <link rel="icon" href="../assets/Zante/images/Navagio.avif" type="image/avif">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
-    <style>
-        .zante-hero {
-            height: 80vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../assets/images/Place/Zante.avif') center/cover no-repeat;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            margin-top: var(--nav-height);
-            position: relative;
-            overflow: hidden;
-            background-attachment: fixed;
-        }
-
-        /* Drone HUD Overlay */
-        .hud-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 5;
-            border: 20px solid transparent;
-            box-sizing: border-box;
-        }
-
-        .hud-corner {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border: 2px solid var(--accent-color);
-            opacity: 0.5;
-        }
-
-        .top-left {
-            top: 40px;
-            left: 40px;
-            border-right: 0;
-            border-bottom: 0;
-        }
-
-        .top-right {
-            top: 40px;
-            right: 40px;
-            border-left: 0;
-            border-bottom: 0;
-        }
-
-        .bottom-left {
-            bottom: 40px;
-            left: 40px;
-            border-right: 0;
-            border-top: 0;
-        }
-
-        .bottom-right {
-            bottom: 40px;
-            right: 40px;
-            border-left: 0;
-            border-top: 0;
-        }
-
-        .hud-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100px;
-            height: 100px;
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            border-radius: 50%;
-        }
-
-        .hud-center::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: -10px;
-            width: 120px;
-            height: 1px;
-            background: rgba(0, 210, 255, 0.3);
-        }
-
-        .media-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-        }
-
-        .video-card {
-            grid-column: span 2;
-            border-radius: 30px;
-            overflow: hidden;
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            position: relative;
-        }
-
-        .map-container {
-            width: 100%;
-            height: 450px;
-            border-radius: 30px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            margin-top: 3rem;
-            filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);
-        }
-
-        @media (max-width: 768px) {
-            .gallery-overlay {
-                padding: 1rem 1.5rem !important;
-                background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%) !important;
-            }
-
-            .gallery-overlay h3 {
-                font-size: 1.2rem !important;
-            }
-
-            .gallery-overlay p {
-                font-size: 0.9rem !important;
-            }
-        }
-
-        /* Category Groups */
-        .category-group {
-            margin-bottom: 5rem;
-        }
-
-        .category-header {
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .category-title {
-            font-size: 1.5rem;
-            color: var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .category-main {
-            margin-bottom: 2rem;
-        }
-
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-        }
-
-        .extra-content {
-            display: none;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .extra-content.active {
-            display: grid;
-            animation: fadeIn 0.5s ease forwards;
-        }
-
-        .expand-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            color: var(--text-primary);
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: 600;
-            transition: var(--transition);
-            display: block;
-            margin: 2rem auto 0;
-        }
-
-        .expand-btn:hover {
-            border-color: var(--accent-color);
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        @media (max-width: 768px) {
-
-            .category-grid,
-            .extra-content {
-                grid-template-columns: 1fr !important;
-            }
-
-            .category-main .video-card,
-            .category-main .gallery-item {
-                aspect-ratio: 16/9;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -236,7 +48,7 @@
         </div>
     </nav>
 
-    <header class="zante-hero">
+    <header class="mission-hero zante-hero">
         <div class="hud-overlay">
             <div class="hud-corner top-left"></div>
             <div class="hud-corner top-right"></div>
@@ -244,12 +56,10 @@
             <div class="hud-corner bottom-right"></div>
             <div class="hud-center"></div>
         </div>
-        <div class="container" style="position: relative; z-index: 10;">
-            <span
-                style="text-transform: uppercase; letter-spacing: 5px; color: var(--accent-color); font-weight: 700;">Missione:
-                Grecia</span>
-            <h1 style="font-size: clamp(3rem, 10vw, 6rem); line-height: 1;">ZANTE</h1>
-            <p style="font-size: 1.5rem; opacity: 0.8; margin-top: 1rem;">L'orizzonte infinito tra cielo e mare.</p>
+        <div class="container mission-content">
+            <span class="mission-label">Missione: Grecia</span>
+            <h1 class="mission-title">ZANTE</h1>
+            <p class="mission-subtitle">L'orizzonte infinito tra cielo e mare.</p>
         </div>
     </header>
 
@@ -265,28 +75,38 @@
                 <!-- Category 1: Porto Limniosas -->
                 <div class="category-group reveal reveal-up">
                     <div class="category-main">
-                        <div class="video-card" style="aspect-ratio: 16/9;">
-                            <video width="100%" height="100%" src="../assets/Zante/QS_River.mp4" autoplay loop muted
-                                playsinline style="object-fit: cover;"></video>
+                        <div class="video-card video-hud-player" style="aspect-ratio: 16/9;">
+                            <video width="100%" height="100%" src="../assets/Zante/video/QS_River.mp4" autoplay loop muted
+                                playsinline preload="metadata" style="object-fit: cover;"></video>
                             <div class="gallery-overlay" style="pointer-events: none;">
                                 <h3>Porto Limniosas View</h3>
+                            </div>
+                            <div class="video-player-hud" aria-label="Video controls">
+                                <span class="live-badge"><span class="live-dot"></span> LIVE</span>
+                                <div class="video-controls">
+                                    <button class="video-toggle" type="button" aria-label="Pause video"><i class="fas fa-pause"></i></button>
+                                    <div class="video-progress" aria-label="Video progress">
+                                        <span class="video-progress-bar"></span>
+                                    </div>
+                                    <button class="video-fullscreen" type="button" aria-label="Fullscreen video"><i class="fas fa-expand"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="category-grid">
                         <div class="gallery-item">
-                            <img src="../assets/Zante/River01.jpg" alt="Porto Limniosas 01">
+                            <img src="../assets/Zante/images/River01.avif" alt="Porto Limniosas 01" loading="lazy" decoding="async">
                         </div>
                         <div class="gallery-item">
-                            <img src="../assets/Zante/River02.jpg" alt="Porto Limniosas 02">
+                            <img src="../assets/Zante/images/River02.avif" alt="Porto Limniosas 02" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="extra-content">
                         <div class="gallery-item">
-                            <img src="../assets/Zante/River03.jpg" alt="Porto Limniosas 03">
+                            <img src="../assets/Zante/images/River03.avif" alt="Porto Limniosas 03" loading="lazy" decoding="async">
                         </div>
                         <div class="gallery-item">
-                            <img src="../assets/Zante/Parking.jpg" alt="Porto Limniosas 04">
+                            <img src="../assets/Zante/images/Parking.avif" alt="Porto Limniosas 04" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <button class="expand-btn">Mostra altro</button>
@@ -296,7 +116,7 @@
                 <div class="category-group reveal reveal-up">
                     <div class="category-main">
                         <div class="gallery-item">
-                            <img src="../assets/Zante/Rock01.jpg" alt="White Sand Stone">
+                            <img src="../assets/Zante/images/Rock01.avif" alt="White Sand Stone" loading="lazy" decoding="async">
                             <div class="gallery-overlay">
                                 <h3>White Sand Stone</h3>
                             </div>
@@ -304,15 +124,15 @@
                     </div>
                     <div class="category-grid">
                         <div class="gallery-item">
-                            <img src="../assets/Zante/Rock02.jpg" alt="Rock Formation 02">
+                            <img src="../assets/Zante/images/Rock02.avif" alt="Rock Formation 02" loading="lazy" decoding="async">
                         </div>
                         <div class="gallery-item">
-                            <img src="../assets/Zante/Rock03.jpg" alt="Rock Formation 03">
+                            <img src="../assets/Zante/images/Rock03.avif" alt="Rock Formation 03" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="extra-content">
                         <div class="gallery-item">
-                            <img src="../assets/Zante/Rock04.jpg" alt="Rock Formation 04">
+                            <img src="../assets/Zante/images/Rock04.avif" alt="Rock Formation 04" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <button class="expand-btn">Mostra altro</button>
@@ -321,23 +141,33 @@
                 <!-- Category 3: Iconic Spots -->
                 <div class="category-group reveal reveal-up">
                     <div class="category-main">
-                        <div class="video-card" style="aspect-ratio: 16/9;">
-                            <video width="100%" height="100%" src="../assets/Zante/CameoIsland.mp4" autoplay loop muted
-                                playsinline style="object-fit: cover;"></video>
+                        <div class="video-card video-hud-player" style="aspect-ratio: 16/9;">
+                            <video width="100%" height="100%" src="../assets/Zante/video/CameoIsland.mp4" autoplay loop muted
+                                playsinline preload="metadata" style="object-fit: cover;"></video>
                             <div class="gallery-overlay" style="pointer-events: none;">
                                 <h3>Cameo Island</h3>
+                            </div>
+                            <div class="video-player-hud" aria-label="Video controls">
+                                <span class="live-badge"><span class="live-dot"></span> LIVE</span>
+                                <div class="video-controls">
+                                    <button class="video-toggle" type="button" aria-label="Pause video"><i class="fas fa-pause"></i></button>
+                                    <div class="video-progress" aria-label="Video progress">
+                                        <span class="video-progress-bar"></span>
+                                    </div>
+                                    <button class="video-fullscreen" type="button" aria-label="Fullscreen video"><i class="fas fa-expand"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="category-grid">
                         <div class="gallery-item">
-                            <img src="../assets/Zante/Navagio.jpg" alt="Navagio Beach">
+                            <img src="../assets/Zante/images/Navagio.avif" alt="Navagio Beach" loading="lazy" decoding="async">
                             <div class="gallery-overlay">
                                 <h3>Navagio</h3>
                             </div>
                         </div>
                         <div class="gallery-item">
-                            <img src="../assets/Zante/City.jpg" alt="Zante City">
+                            <img src="../assets/Zante/images/City.avif" alt="Zante City" loading="lazy" decoding="async">
                             <div class="gallery-overlay">
                                 <h3>City</h3>
                             </div>
@@ -347,11 +177,21 @@
             </div>
 
             <div class="category-main reveal reveal-up" style="margin-top: 5rem;">
-                <div class="video-card" style="aspect-ratio: 16/9;">
-                    <video width="100%" height="100%" src="../assets/Zante/QS_House.mp4" autoplay loop muted
-                        playsinline style="object-fit: cover;"></video>
+                <div class="video-card video-hud-player" style="aspect-ratio: 16/9;">
+                    <video width="100%" height="100%" src="../assets/Zante/video/QS_House.mp4" autoplay loop muted
+                        playsinline preload="metadata" style="object-fit: cover;"></video>
                     <div class="gallery-overlay" style="pointer-events: none;">
                         <h3>House View</h3>
+                    </div>
+                    <div class="video-player-hud" aria-label="Video controls">
+                        <span class="live-badge"><span class="live-dot"></span> LIVE</span>
+                        <div class="video-controls">
+                            <button class="video-toggle" type="button" aria-label="Pause video"><i class="fas fa-pause"></i></button>
+                            <div class="video-progress" aria-label="Video progress">
+                                <span class="video-progress-bar"></span>
+                            </div>
+                            <button class="video-fullscreen" type="button" aria-label="Fullscreen video"><i class="fas fa-expand"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -366,7 +206,7 @@
                         <span class="radar-tag top-right">LAT: 37.7870° N | LON: 20.8979° E</span>
 
                         <!-- Waypoint 1: Porto Limniosas -->
-                        <div class="radar-waypoint" style="top: 38%; left: 30%;" data-title="Porto Limniosas View" data-alt="85m" data-speed="14 km/h" data-type="video" data-src="../assets/Zante/QS_River.mp4">
+                        <div class="radar-waypoint" style="top: 38%; left: 30%;" data-title="Porto Limniosas View" data-alt="85m" data-speed="14 km/h" data-type="video" data-src="../assets/Zante/video/QS_River.mp4">
                             <div class="waypoint-pin">
                                 <i class="fas fa-video"></i>
                                 <div class="ping"></div>
@@ -375,7 +215,7 @@
                         </div>
 
                         <!-- Waypoint 2: Navagio Beach -->
-                        <div class="radar-waypoint" style="top: 25%; left: 58%;" data-title="Navagio Beach" data-alt="101m" data-speed="18 km/h" data-type="image" data-src="../assets/Zante/Navagio.jpg">
+                        <div class="radar-waypoint" style="top: 25%; left: 58%;" data-title="Navagio Beach" data-alt="101m" data-speed="18 km/h" data-type="image" data-src="../assets/Zante/images/Navagio.avif">
                             <div class="waypoint-pin">
                                 <i class="fas fa-camera"></i>
                                 <div class="ping"></div>
@@ -384,7 +224,7 @@
                         </div>
 
                         <!-- Waypoint 3: Cameo Island -->
-                        <div class="radar-waypoint" style="top: 72%; left: 74%;" data-title="Cameo Island" data-alt="45m" data-speed="10 km/h" data-type="video" data-src="../assets/Zante/CameoIsland.mp4">
+                        <div class="radar-waypoint" style="top: 72%; left: 74%;" data-title="Cameo Island" data-alt="45m" data-speed="10 km/h" data-type="video" data-src="../assets/Zante/video/CameoIsland.mp4">
                             <div class="waypoint-pin">
                                 <i class="fas fa-video"></i>
                                 <div class="ping"></div>
@@ -393,7 +233,7 @@
                         </div>
 
                         <!-- Waypoint 4: White Sand Stone -->
-                        <div class="radar-waypoint" style="top: 52%; left: 42%;" data-title="White Sand Stone" data-alt="62m" data-speed="12 km/h" data-type="image" data-src="../assets/Zante/Rock01.jpg">
+                        <div class="radar-waypoint" style="top: 52%; left: 42%;" data-title="White Sand Stone" data-alt="62m" data-speed="12 km/h" data-type="image" data-src="../assets/Zante/images/Rock01.avif">
                             <div class="waypoint-pin">
                                 <i class="fas fa-camera"></i>
                                 <div class="ping"></div>
@@ -408,7 +248,7 @@
                                 <button class="popup-close">&times;</button>
                             </div>
                             <div class="popup-media">
-                                <img src="../assets/Zante/Navagio.jpg" alt="Navagio">
+                                <img src="../assets/Zante/images/Navagio.avif" alt="Navagio">
                             </div>
                             <div class="popup-details">
                                 <h4 class="popup-title">Navagio Beach</h4>
@@ -440,15 +280,15 @@
                         <tbody>
                             <tr>
                                 <td><i class="fas fa-route"></i> Distanza Totale</td>
-                                <td>1.98 km</td>
+                                <td><span class="stat-value" data-counter="1.98" data-suffix=" km">0 km</span></td>
                             </tr>
                             <tr>
                                 <td><i class="fas fa-clock"></i> Tempo di Volo</td>
-                                <td>55'</td>
+                                <td><span class="stat-value" data-counter="55" data-suffix="'">0'</span></td>
                             </tr>
                             <tr>
                                 <td><i class="fas fa-mountain"></i> Altitudine Max</td>
-                                <td>101 MT</td>
+                                <td><span class="stat-value" data-counter="101" data-suffix=" MT">0 MT</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -457,54 +297,21 @@
         </div>
     </section>
 
-    <footer style="padding: 50px 0; text-align: center; border-top: 1px solid var(--glass-border);">
-        <a href="../index.html" style="color: var(--accent-color); text-decoration: none; font-weight: 600;">&larr;
-            Riatterra alla base</a>
-        <div class="social-icons" style="margin-bottom: 2rem; margin-top: 2rem;">
-            <a href="https://github.com/mattiabracco05" target="_blank" class="social-card">
-                <div class="social-hud-corner top-left"></div>
-                <div class="social-hud-corner bottom-right"></div>
-                <div class="social-icon-box">
-                    <i class="fab fa-github"></i>
-                    <span class="radar-ring"></span>
-                </div>
-                <div class="social-info">
-                    <span class="social-label">GitHub</span>
-                    <span class="social-username">@mattiabracco05</span>
-                </div>
-                <div class="flight-badge"><i class="fas fa-paper-plane"></i></div>
-            </a>
-            <a href="https://www.instagram.com/matti_bracco" target="_blank" class="social-card">
-                <div class="social-hud-corner top-left"></div>
-                <div class="social-hud-corner bottom-right"></div>
-                <div class="social-icon-box">
-                    <i class="fab fa-instagram"></i>
-                    <span class="radar-ring"></span>
-                </div>
-                <div class="social-info">
-                    <span class="social-label">Instagram</span>
-                    <span class="social-username">@matti_bracco</span>
-                </div>
-                <div class="flight-badge"><i class="fas fa-paper-plane"></i></div>
-            </a>
-            <a href="https://www.threads.com/@matti_bracco" target="_blank" class="social-card">
-                <div class="social-hud-corner top-left"></div>
-                <div class="social-hud-corner bottom-right"></div>
-                <div class="social-icon-box">
-                    <i class="fab fa-threads"></i>
-                    <span class="radar-ring"></span>
-                </div>
-                <div class="social-info">
-                    <span class="social-label">Threads</span>
-                    <span class="social-username">@matti_bracco</span>
-                </div>
-                <div class="flight-badge"><i class="fas fa-paper-plane"></i></div>
-            </a>
-        </div>
-        <p style="color: var(--text-secondary)">&copy; 2026 Drone View. All rights reserved.</p>
-    </footer>
+    <footer id="site-footer"></footer>
 
     <script src="../js/script.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const footer = document.getElementById('site-footer');
+            if (!footer) return;
+            fetch('../footer.html')
+                .then(response => response.ok ? response.text() : Promise.reject())
+                .then(html => { footer.outerHTML = html; })
+                .catch(() => {
+                    footer.innerHTML = '<div class="container"><p style="color: var(--text-secondary)">Contatti non disponibili.</p></div>';
+                });
+        });
+    </script>
     <script>
         // Category Expand/Collapse logic
         document.querySelectorAll('.category-group').forEach(group => {

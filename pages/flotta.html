@@ -4,7 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drone View</title>
+    <title>Drone View | Flotta</title>
+    <meta name="description" content="Scopri la flotta di droni e la tecnologia dietro i video e le fotografie aeree di Drone View.">
+    <meta name="theme-color" content="#050505">
+    <meta property="og:title" content="Drone View | Flotta">
+    <meta property="og:description" content="Scopri la flotta di droni e la tecnologia dietro i video e le fotografie aeree di Drone View.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.droneview.it/pages/flotta.html">
+    <meta property="og:image" content="https://www.droneview.it/assets/images/Flotta.jpg">
+    <link rel="canonical" href="https://www.droneview.it/pages/flotta.html">
+    <link rel="icon" href="../assets/images/Flotta.jpg" type="image/jpeg">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
@@ -301,53 +310,19 @@
         </div>
     </main>
 
-    <footer style="padding: 50px 0; text-align: center; border-top: 1px solid var(--glass-border); margin-top: 100px;">
-        <a href="../index.html"
-            style="color: var(--accent-color); text-decoration: none; font-weight: 600; display: block; margin-bottom: 1rem;">&larr;
-            Riatterra alla base</a>
-        <div class="social-icons" style="margin-bottom: 2rem; margin-top: 2rem;">
-            <a href="https://github.com/mattiabracco05" target="_blank" class="social-card">
-                <div class="social-hud-corner top-left"></div>
-                <div class="social-hud-corner bottom-right"></div>
-                <div class="social-icon-box">
-                    <i class="fab fa-github"></i>
-                    <span class="radar-ring"></span>
-                </div>
-                <div class="social-info">
-                    <span class="social-label">GitHub</span>
-                    <span class="social-username">@mattiabracco05</span>
-                </div>
-                <div class="flight-badge"><i class="fas fa-paper-plane"></i></div>
-            </a>
-            <a href="https://www.instagram.com/matti_bracco" target="_blank" class="social-card">
-                <div class="social-hud-corner top-left"></div>
-                <div class="social-hud-corner bottom-right"></div>
-                <div class="social-icon-box">
-                    <i class="fab fa-instagram"></i>
-                    <span class="radar-ring"></span>
-                </div>
-                <div class="social-info">
-                    <span class="social-label">Instagram</span>
-                    <span class="social-username">@matti_bracco</span>
-                </div>
-                <div class="flight-badge"><i class="fas fa-paper-plane"></i></div>
-            </a>
-            <a href="https://www.threads.com/@matti_bracco" target="_blank" class="social-card">
-                <div class="social-hud-corner top-left"></div>
-                <div class="social-hud-corner bottom-right"></div>
-                <div class="social-icon-box">
-                    <i class="fab fa-threads"></i>
-                    <span class="radar-ring"></span>
-                </div>
-                <div class="social-info">
-                    <span class="social-label">Threads</span>
-                    <span class="social-username">@matti_bracco</span>
-                </div>
-                <div class="flight-badge"><i class="fas fa-paper-plane"></i></div>
-            </a>
-        </div>
-        <p style="color: var(--text-secondary)">&copy; 2026 Drone View. DJI Mini 4K Specialist.</p>
-    </footer>
+    <footer id="site-footer"></footer>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const footer = document.getElementById('site-footer');
+            if (!footer) return;
+            fetch('../footer.html')
+                .then(response => response.ok ? response.text() : Promise.reject())
+                .then(html => { footer.outerHTML = html; })
+                .catch(() => {
+                    footer.innerHTML = '<div class="container"><p style="color: var(--text-secondary)">Contatti non disponibili.</p></div>';
+                });
+        });
+    </script>
 
     <style>
         @keyframes float {
