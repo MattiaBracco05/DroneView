@@ -48,45 +48,66 @@ function initCustomCursor() {
     });
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+// Handle page display & restoration from Back/Forward cache (bfcache)
+window.addEventListener("pageshow", () => {
     document.body.style.opacity = "1";
-    setTimeout(() => overlay.classList.remove('active'), 500);
+    overlay.classList.add('active');
+    setTimeout(() => {
+        overlay.classList.remove('active');
+    }, 500);
+});
+
+window.addEventListener("pagehide", () => {
+    overlay.classList.remove('active');
 });
 
 // Handle page transitions
-document.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', (e) => {
-        const href = link.getAttribute('href');
-        if (href && href.includes('.html')) {
-            e.preventDefault();
+const initPageTransitions = () => {
+    document.querySelectorAll('a').forEach(link => {
+        if (link.dataset.transitionInitialized) return;
+        link.dataset.transitionInitialized = 'true';
+
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            const target = link.getAttribute('target');
             
-            // Create Splash
-            const rect = link.getBoundingClientRect();
-            const splash = document.createElement('div');
-            splash.className = 'splash';
-            
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            splash.style.left = `${x}px`;
-            splash.style.top = `${y}px`;
-            const size = Math.max(rect.width, rect.height) * 2;
-            splash.style.width = splash.style.height = `${size}px`;
-            splash.style.marginLeft = splash.style.marginTop = `-${size/2}px`;
-            
-            link.style.overflow = 'hidden';
-            link.appendChild(splash);
-            
-            // Trigger global transition after a short delay
-            setTimeout(() => {
-                overlay.classList.add('active');
+            // Ignore if key modifier is pressed or external target
+            if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || target === '_blank') return;
+
+            if (href && href.includes('.html')) {
+                e.preventDefault();
+                
+                // Create Splash
+                const rect = link.getBoundingClientRect();
+                const splash = document.createElement('div');
+                splash.className = 'splash';
+                
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                splash.style.left = `${x}px`;
+                splash.style.top = `${y}px`;
+                const size = Math.max(rect.width, rect.height) * 2;
+                splash.style.width = splash.style.height = `${size}px`;
+                splash.style.marginLeft = splash.style.marginTop = `-${size/2}px`;
+                
+                link.style.overflow = 'hidden';
+                link.appendChild(splash);
+                
+                // Trigger global transition after a short delay
                 setTimeout(() => {
-                    window.location.href = href;
-                }, 600);
-            }, 200);
-        }
+                    overlay.classList.add('active');
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 600);
+                }, 200);
+            }
+        });
     });
-});
+};
+
+document.addEventListener('DOMContentLoaded', initPageTransitions);
+initPageTransitions();
 
 // Smooth scrolling and Takeoff Animation
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -174,8 +195,6 @@ const initReveal = () => {
         }
     });
 };
-
-initReveal();
 
 // Drone Scroll Effects
 window.addEventListener('scroll', () => {
@@ -314,27 +333,45 @@ const initNav = () => {
     const navToggle = document.querySelector('.nav-toggle');
     const navLinks = document.querySelector('.nav-links');
 
-    if (!navToggle || !navLinks) return;
+    if (!navToggle || !navLinks || navToggle.dataset.initialized) return;
+    navToggle.dataset.initialized = 'true';
 
-    navToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
+    const toggleMenu = (e) => {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        const isOpen = navLinks.classList.toggle('active');
         const icon = navToggle.querySelector('i');
-        icon.classList.toggle('fa-bars');
-        icon.classList.toggle('fa-times');
-    });
+        if (icon) {
+            if (isOpen) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
+    };
+
+    navToggle.addEventListener('click', toggleMenu);
 
     // Close menu when clicking a link
     navLinks.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
-            navLinks.classList.remove('active');
-            const icon = navToggle.querySelector('i');
-            icon.classList.add('fa-bars');
-            icon.classList.remove('fa-times');
+            if (navLinks.classList.contains('active')) {
+                toggleMenu();
+            }
         });
     });
-};
 
-initNav();
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (navLinks.classList.contains('active') && !navLinks.contains(e.target) && !navToggle.contains(e.target)) {
+            toggleMenu();
+        }
+    });
+};
 
 // 3D Tilt Effect for Gallery Cards
 const initTilt = () => {

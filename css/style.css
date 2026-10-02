@@ -169,6 +169,10 @@ nav {
     transition: var(--transition);
 }
 
+nav .container {
+    width: 100%;
+}
+
 .nav-toggle {
     display: none;
     background: none;
