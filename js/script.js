@@ -211,21 +211,62 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Lightbox Functionality
+// Enhanced Lightbox with Navigation
 const initLightbox = () => {
-    // Create lightbox elements
     const lb = document.createElement('div');
     lb.className = 'lightbox';
     lb.innerHTML = `
         <div class="lightbox-content">
             <button class="lightbox-close" aria-label="Close">&times;</button>
+            <button class="lightbox-nav prev" aria-label="Precedente">&#8249;</button>
+            <button class="lightbox-nav next" aria-label="Successiva">&#8250;</button>
             <img class="lightbox-img" src="" alt="Full size image">
+            <span class="lightbox-counter"></span>
         </div>
     `;
     document.body.appendChild(lb);
 
     const lbImg = lb.querySelector('.lightbox-img');
     const lbClose = lb.querySelector('.lightbox-close');
+    const lbPrev = lb.querySelector('.lightbox-nav.prev');
+    const lbNext = lb.querySelector('.lightbox-nav.next');
+    const lbCounter = lb.querySelector('.lightbox-counter');
+
+    let images = [];
+    let currentIndex = 0;
+
+    const collectImages = () => {
+        images = [];
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            const img = item.querySelector('img');
+            const href = item.getAttribute('href');
+            if (img && (!href || href === '#' || href.startsWith('#'))) {
+                images.push({ src: img.src, alt: img.alt, element: item });
+            }
+        });
+    };
+
+    const showImage = (index) => {
+        if (images.length === 0) return;
+        currentIndex = index;
+        lbImg.src = images[index].src;
+        lbImg.alt = images[index].alt || 'Full size image';
+        lbCounter.textContent = `${index + 1} / ${images.length}`;
+        const hasMultiple = images.length > 1;
+        lbPrev.style.display = hasMultiple ? 'block' : 'none';
+        lbNext.style.display = hasMultiple ? 'block' : 'none';
+        lbCounter.style.display = hasMultiple ? 'block' : 'none';
+    };
+
+    const showPrev = () => {
+        if (images.length <= 1) return;
+        showImage((currentIndex - 1 + images.length) % images.length);
+    };
+
+    const showNext = () => {
+        if (images.length <= 1) return;
+        showImage((currentIndex + 1) % images.length);
+    };
 
     // Open lightbox
     document.querySelectorAll('.gallery-item').forEach(item => {
@@ -234,21 +275,27 @@ const initLightbox = () => {
 
         item.addEventListener('click', (e) => {
             const href = item.getAttribute('href');
-            // If it's not a link to another page, open lightbox
             if (!href || href === '#' || href.startsWith('#')) {
                 e.preventDefault();
-                lbImg.src = img.src;
-                lb.classList.add('active');
-                document.body.style.overflow = 'hidden';
+                collectImages();
+                const index = images.findIndex(i => i.element === item);
+                if (index !== -1) {
+                    showImage(index);
+                    lb.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
             }
         });
     });
+
+    // Navigation
+    lbPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+    lbNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
 
     // Close lightbox
     const closeLB = (withAnimation = false) => {
         if (withAnimation) {
             lb.classList.add('closing');
-            // Wait for the take-off animation to finish
             setTimeout(() => {
                 lb.classList.remove('active');
                 lb.classList.remove('closing');
@@ -264,13 +311,30 @@ const initLightbox = () => {
 
     lbClose.addEventListener('click', () => closeLB(true));
     lb.addEventListener('click', (e) => {
-        if (e.target === lb) closeLB(false); // Quick close when clicking outside
+        if (e.target === lb) closeLB(false);
     });
 
-    // ESC key to close
+    // Keyboard navigation (ESC + Arrows)
     window.addEventListener('keydown', (e) => {
+        if (!lb.classList.contains('active')) return;
         if (e.key === 'Escape') closeLB(false);
+        if (e.key === 'ArrowLeft') showPrev();
+        if (e.key === 'ArrowRight') showNext();
     });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    lb.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lb.addEventListener('touchend', (e) => {
+        const diff = touchStartX - e.changedTouches[0].screenX;
+        if (Math.abs(diff) > 50) {
+            if (diff > 0) showNext();
+            else showPrev();
+        }
+    }, { passive: true });
 };
 
 initLightbox();
@@ -489,4 +553,70 @@ const initThemeSwitcher = () => {
 
 document.addEventListener('DOMContentLoaded', initThemeSwitcher);
 initThemeSwitcher();
+
+// Scroll Progress Indicator
+const initScrollProgress = () => {
+    const progressBar = document.createElement('div');
+    progressBar.className = 'scroll-progress';
+    document.body.appendChild(progressBar);
+
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (docHeight > 0) {
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            progressBar.style.width = scrollPercent + '%';
+        }
+    }, { passive: true });
+};
+
+initScrollProgress();
+
+// Animated Counter for Flight Stats
+const initCounterAnimation = () => {
+    const counterElements = document.querySelectorAll('[data-counter]');
+    if (counterElements.length === 0) return;
+
+    const animateCounter = (element) => {
+        const target = parseFloat(element.dataset.counter);
+        const suffix = element.dataset.counterSuffix || '';
+        const decimals = (target % 1 !== 0) ? (target.toString().split('.')[1] || '').length : 0;
+        const duration = 2000;
+        const startTime = performance.now();
+
+        element.textContent = '0' + suffix;
+
+        const update = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            // Ease out cubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = target * eased;
+
+            element.textContent = current.toFixed(decimals) + suffix;
+
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            } else {
+                element.textContent = target + suffix;
+            }
+        };
+
+        requestAnimationFrame(update);
+    };
+
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !entry.target.dataset.counterDone) {
+                entry.target.dataset.counterDone = 'true';
+                animateCounter(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    counterElements.forEach(el => counterObserver.observe(el));
+};
+
+document.addEventListener('DOMContentLoaded', initCounterAnimation);
+initCounterAnimation();
 

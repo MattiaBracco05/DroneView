@@ -1226,3 +1226,243 @@ nav .container {
     .map-radar-wrapper .map-container { height: 420px; }
     .hud-preview-popup { width: 280px; bottom: 15px; }
 }
+
+/* ====== REUSABLE BUTTON STYLES ====== */
+.btn-primary {
+    padding: 1rem 2.5rem;
+    background: var(--accent-gradient);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    display: inline-block;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
+}
+
+.btn-primary.btn-lg {
+    padding: 1.2rem 3rem;
+    font-weight: 700;
+    box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
+}
+
+/* ====== SHARED MISSION PAGE STYLES ====== */
+.mission-hero {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: var(--nav-height);
+    position: relative;
+    overflow: hidden;
+}
+
+.mission-label {
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    color: var(--accent-color);
+    font-weight: 700;
+    display: block;
+}
+
+.mission-title {
+    font-size: clamp(3rem, 10vw, 6rem);
+    line-height: 1;
+}
+
+.mission-subtitle {
+    font-size: 1.5rem;
+    opacity: 0.8;
+    margin-top: 1rem;
+}
+
+/* Drone HUD Overlay */
+.hud-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    border: 20px solid transparent;
+    box-sizing: border-box;
+}
+
+.hud-corner {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--accent-color);
+    opacity: 0.5;
+}
+
+.hud-corner.top-left { top: 40px; left: 40px; border-right: 0; border-bottom: 0; }
+.hud-corner.top-right { top: 40px; right: 40px; border-left: 0; border-bottom: 0; }
+.hud-corner.bottom-left { bottom: 40px; left: 40px; border-right: 0; border-top: 0; }
+.hud-corner.bottom-right { bottom: 40px; right: 40px; border-left: 0; border-top: 0; }
+
+.hud-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border: 1px solid rgba(0, 210, 255, 0.3);
+    border-radius: 50%;
+}
+
+.hud-center::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    width: 120px;
+    height: 1px;
+    background: rgba(0, 210, 255, 0.3);
+}
+
+/* Media Grid & Video Cards */
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.video-card {
+    grid-column: span 2;
+    border-radius: 30px;
+    overflow: hidden;
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    position: relative;
+}
+
+.map-container {
+    width: 100%;
+    height: 450px;
+    border-radius: 30px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    margin-top: 3rem;
+    filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* ====== SCROLL PROGRESS INDICATOR ====== */
+.scroll-progress {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: var(--accent-gradient);
+    z-index: 999;
+    box-shadow: 0 0 10px var(--accent-color);
+    pointer-events: none;
+}
+
+/* ====== ENHANCED LIGHTBOX WITH NAVIGATION ====== */
+.lightbox-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--glass-border);
+    color: white;
+    font-size: 2rem;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    z-index: 11002;
+    transition: var(--transition);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    line-height: 1;
+}
+
+.lightbox-nav:hover {
+    background: rgba(0, 210, 255, 0.2);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.lightbox-nav.prev { left: 20px; }
+.lightbox-nav.next { right: 20px; }
+
+.lightbox-counter {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    z-index: 11002;
+    letter-spacing: 2px;
+}
+
+/* ====== GALLERY CATEGORY SYSTEM ====== */
+.category-group { margin-bottom: 5rem; }
+.category-header { margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; }
+.category-title { font-size: 1.5rem; color: var(--accent-color); text-transform: uppercase; letter-spacing: 2px; }
+.category-main { margin-bottom: 2rem; }
+.category-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+
+.extra-content {
+    display: none;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.extra-content.active {
+    display: grid;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.expand-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    transition: var(--transition);
+    display: block;
+    margin: 2rem auto 0;
+}
+
+.expand-btn:hover {
+    border-color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ====== RESPONSIVE ADDITIONS ====== */
+@media (max-width: 768px) {
+    .mission-hero { height: 60vh; }
+    .mission-title { font-size: clamp(2.5rem, 8vw, 4rem); }
+    .gallery-overlay {
+        padding: 1rem 1.5rem !important;
+        background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%) !important;
+    }
+    .gallery-overlay h3 { font-size: 1.2rem !important; }
+    .gallery-overlay p { font-size: 0.9rem !important; }
+    .category-grid, .extra-content { grid-template-columns: 1fr !important; }
+    .category-main .video-card,
+    .category-main .gallery-item { aspect-ratio: 16/9; }
+    .lightbox-nav { padding: 0.8rem 1rem; font-size: 1.5rem; }
+    .lightbox-nav.prev { left: 10px; }
+    .lightbox-nav.next { right: 10px; }
+}
+
