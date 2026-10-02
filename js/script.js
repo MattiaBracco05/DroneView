@@ -26,12 +26,12 @@ function initCustomCursor() {
     cursor.className = 'custom-cursor';
     cursor.innerHTML = `
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="12" fill="#00d2ff"/>
-            <path d="M20 20 L80 80 M80 20 L20 80" stroke="#00d2ff" stroke-width="6" stroke-linecap="round"/>
-            <circle cx="20" cy="20" r="8" fill="none" stroke="#00d2ff" stroke-width="3"/>
-            <circle cx="80" cy="20" r="8" fill="none" stroke="#00d2ff" stroke-width="3"/>
-            <circle cx="20" cy="80" r="8" fill="none" stroke="#00d2ff" stroke-width="3"/>
-            <circle cx="80" cy="80" r="8" fill="none" stroke="#00d2ff" stroke-width="3"/>
+            <circle cx="50" cy="50" r="12" fill="var(--accent-color)"/>
+            <path d="M20 20 L80 80 M80 20 L20 80" stroke="var(--accent-color)" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="20" cy="20" r="8" fill="none" stroke="var(--accent-color)" stroke-width="3"/>
+            <circle cx="80" cy="20" r="8" fill="none" stroke="var(--accent-color)" stroke-width="3"/>
+            <circle cx="20" cy="80" r="8" fill="none" stroke="var(--accent-color)" stroke-width="3"/>
+            <circle cx="80" cy="80" r="8" fill="none" stroke="var(--accent-color)" stroke-width="3"/>
         </svg>
     `;
     document.body.appendChild(cursor);
@@ -41,7 +41,7 @@ function initCustomCursor() {
         cursor.style.top = e.clientY + 'px';
     });
 
-    const interactiveElements = document.querySelectorAll('a, button, .gallery-item, .accessory-card, .feature-card, .trapdoor');
+    const interactiveElements = document.querySelectorAll('a, button, .gallery-item, .accessory-card, .feature-card, .social-card, .radar-waypoint');
     interactiveElements.forEach(el => {
         el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
         el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
@@ -400,4 +400,93 @@ const initTilt = () => {
 };
 
 initTilt();
+
+// Interactive Flight Radar Waypoints & Preview Popup
+const initRadarWaypoints = () => {
+    document.querySelectorAll('.map-radar-wrapper').forEach(wrapper => {
+        const popup = wrapper.querySelector('.hud-preview-popup');
+        if (!popup) return;
+
+        const popupTitle = popup.querySelector('.popup-title');
+        const popupAlt = popup.querySelector('.popup-alt');
+        const popupSpeed = popup.querySelector('.popup-speed');
+        const popupMedia = popup.querySelector('.popup-media');
+        const popupClose = popup.querySelector('.popup-close');
+
+        const waypoints = wrapper.querySelectorAll('.radar-waypoint');
+
+        waypoints.forEach(wp => {
+            const showPopup = () => {
+                const title = wp.dataset.title || 'Punto di Volo';
+                const alt = wp.dataset.alt || '50m';
+                const speed = wp.dataset.speed || '12 km/h';
+                const type = wp.dataset.type || 'image';
+                const src = wp.dataset.src;
+
+                popupTitle.textContent = title;
+                popupAlt.textContent = alt;
+                popupSpeed.textContent = speed;
+
+                if (type === 'video') {
+                    popupMedia.innerHTML = `<video src="${src}" autoplay loop muted playsinline></video>`;
+                } else {
+                    popupMedia.innerHTML = `<img src="${src}" alt="${title}">`;
+                }
+
+                popup.classList.add('active');
+            };
+
+            wp.addEventListener('mouseenter', showPopup);
+            wp.addEventListener('click', showPopup);
+        });
+
+        if (popupClose) {
+            popupClose.addEventListener('click', (e) => {
+                e.stopPropagation();
+                popup.classList.remove('active');
+            });
+        }
+    });
+};
+
+document.addEventListener('DOMContentLoaded', initRadarWaypoints);
+initRadarWaypoints();
+
+// HUD Theme Switcher Logic
+const initThemeSwitcher = () => {
+    const savedTheme = localStorage.getItem('droneview_hud_theme') || 'cyan';
+    
+    const applyTheme = (themeName) => {
+        if (themeName === 'cyan') {
+            document.documentElement.removeAttribute('data-theme');
+        } else {
+            document.documentElement.setAttribute('data-theme', themeName);
+        }
+        localStorage.setItem('droneview_hud_theme', themeName);
+
+        // Update active class on theme buttons
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            if (btn.dataset.setTheme === themeName) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    };
+
+    // Apply saved theme immediately
+    applyTheme(savedTheme);
+
+    // Event listeners for theme buttons
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const theme = btn.dataset.setTheme;
+            applyTheme(theme);
+        });
+    });
+};
+
+document.addEventListener('DOMContentLoaded', initThemeSwitcher);
+initThemeSwitcher();
 

@@ -138,6 +138,17 @@
         <div class="container">
             <div class="nav-container">
                 <a href="../index.html" class="logo">DRONE VIEW</a>
+                <div class="hud-theme-switcher" aria-label="HUD Theme Switcher">
+                    <button class="theme-btn active" data-set-theme="cyan" title="Ciano Neon">
+                        <span class="theme-dot cyan"></span>
+                    </button>
+                    <button class="theme-btn" data-set-theme="amber" title="Ambra Tattico">
+                        <span class="theme-dot amber"></span>
+                    </button>
+                    <button class="theme-btn" data-set-theme="green" title="Visione Notturna">
+                        <span class="theme-dot green"></span>
+                    </button>
+                </div>
                 <button class="nav-toggle" aria-label="Toggle menu">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -204,11 +215,63 @@
             <div style="margin-top: 100px;" class="reveal reveal-up">
                 <h2 class="section-title">Localizzazione</h2>
                 <p style="color: var(--text-secondary)">Area delle riprese nelle valli piemontesi.</p>
-                <div class="map-container reveal reveal-up">
-                    <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-                        src="https://maps.google.com/maps?q=Valle%20Po,Piemonte,Italia&t=&z=11&ie=UTF8&iwloc=&output=embed"
-                        style="border:0;">
-                    </iframe>
+                <div class="map-radar-wrapper reveal reveal-up">
+                    <div class="hud-radar-overlay">
+                        <div class="radar-sweep"></div>
+                        <span class="radar-tag top-left"><i class="fas fa-satellite-dish"></i> RADAR DRONE: VALLE PO</span>
+                        <span class="radar-tag top-right">LAT: 44.7000° N | LON: 7.1000° E</span>
+
+                        <!-- Waypoint 1: Vetta Innevata -->
+                        <div class="radar-waypoint" style="top: 35%; left: 45%;" data-title="Vetta Innevata" data-alt="500m" data-speed="25 km/h" data-type="video" data-src="https://assets.mixkit.co/videos/preview/mixkit-flying-over-a-large-mountain-range-in-the-snow-34440-large.mp4">
+                            <div class="waypoint-pin">
+                                <i class="fas fa-video"></i>
+                                <div class="ping"></div>
+                            </div>
+                            <span class="waypoint-label">Vetta Innevata</span>
+                        </div>
+
+                        <!-- Waypoint 2: Monviso Peak -->
+                        <div class="radar-waypoint" style="top: 48%; left: 32%;" data-title="Il Monviso Peak" data-alt="480m" data-speed="22 km/h" data-type="image" data-src="https://images.unsplash.com/photo-1544839095-cf566874838b?q=80&w=2070&auto=format&fit=crop">
+                            <div class="waypoint-pin">
+                                <i class="fas fa-mountain"></i>
+                                <div class="ping"></div>
+                            </div>
+                            <span class="waypoint-label">Il Monviso</span>
+                        </div>
+
+                        <!-- Waypoint 3: Boschi Alpini -->
+                        <div class="radar-waypoint" style="top: 65%; left: 60%;" data-title="Boschi Alpini Valle Po" data-alt="320m" data-speed="16 km/h" data-type="image" data-src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2070&auto=format&fit=crop">
+                            <div class="waypoint-pin">
+                                <i class="fas fa-tree"></i>
+                                <div class="ping"></div>
+                            </div>
+                            <span class="waypoint-label">Boschi Alpini</span>
+                        </div>
+
+                        <!-- Floating Preview HUD Popup -->
+                        <div class="hud-preview-popup" id="hudPreviewPopupVallePo">
+                            <div class="popup-header">
+                                <span class="popup-badge"><i class="fas fa-plane"></i> ANTEPRIMA VOLO</span>
+                                <button class="popup-close">&times;</button>
+                            </div>
+                            <div class="popup-media">
+                                <img src="https://images.unsplash.com/photo-1544839095-cf566874838b?q=80&w=2070&auto=format&fit=crop" alt="Monviso">
+                            </div>
+                            <div class="popup-details">
+                                <h4 class="popup-title">Il Monviso Peak</h4>
+                                <div class="popup-stats">
+                                    <span><i class="fas fa-arrow-up"></i> Alt: <strong class="popup-alt">480m</strong></span>
+                                    <span><i class="fas fa-wind"></i> Vento: <strong class="popup-speed">22 km/h</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="map-container">
+                        <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                            src="https://maps.google.com/maps?q=Valle%20Po,Piemonte,Italia&t=&z=11&ie=UTF8&iwloc=&output=embed"
+                            style="border:0;">
+                        </iframe>
+                    </div>
                 </div>
 
                 <div class="stats-container reveal reveal-up">
@@ -245,20 +308,44 @@
         <a href="../index.html" style="color: var(--accent-color); text-decoration: none; font-weight: 600;">&larr;
             Riatterra alla base</a>
         <div class="social-icons" style="margin-bottom: 2rem; margin-top: 2rem;">
-            <a href="https://github.com/mattiabracco05" target="_blank" class="trapdoor">
-                <span class="username">@mattiabracco05</span>
-                <span class="door top"><i class="fab fa-github"></i></span>
-                <span class="door bottom"><i class="fab fa-github"></i></span>
+            <a href="https://github.com/mattiabracco05" target="_blank" class="social-card">
+                <div class="social-hud-corner top-left"></div>
+                <div class="social-hud-corner bottom-right"></div>
+                <div class="social-icon-box">
+                    <i class="fab fa-github"></i>
+                    <span class="radar-ring"></span>
+                </div>
+                <div class="social-info">
+                    <span class="social-label">GitHub</span>
+                    <span class="social-username">@mattiabracco05</span>
+                </div>
+                <div class="flight-badge"><i class="fas fa-paper-plane"></i></div>
             </a>
-            <a href="https://www.instagram.com/matti_bracco" target="_blank" class="trapdoor">
-                <span class="username">@matti_bracco</span>
-                <span class="door top"><i class="fab fa-instagram"></i></span>
-                <span class="door bottom"><i class="fab fa-instagram"></i></span>
+            <a href="https://www.instagram.com/matti_bracco" target="_blank" class="social-card">
+                <div class="social-hud-corner top-left"></div>
+                <div class="social-hud-corner bottom-right"></div>
+                <div class="social-icon-box">
+                    <i class="fab fa-instagram"></i>
+                    <span class="radar-ring"></span>
+                </div>
+                <div class="social-info">
+                    <span class="social-label">Instagram</span>
+                    <span class="social-username">@matti_bracco</span>
+                </div>
+                <div class="flight-badge"><i class="fas fa-paper-plane"></i></div>
             </a>
-            <a href="https://www.threads.com/@matti_bracco" target="_blank" class="trapdoor">
-                <span class="username">@matti_bracco</span>
-                <span class="door top"><i class="fab fa-threads"></i></span>
-                <span class="door bottom"><i class="fab fa-threads"></i></span>
+            <a href="https://www.threads.com/@matti_bracco" target="_blank" class="social-card">
+                <div class="social-hud-corner top-left"></div>
+                <div class="social-hud-corner bottom-right"></div>
+                <div class="social-icon-box">
+                    <i class="fab fa-threads"></i>
+                    <span class="radar-ring"></span>
+                </div>
+                <div class="social-info">
+                    <span class="social-label">Threads</span>
+                    <span class="social-username">@matti_bracco</span>
+                </div>
+                <div class="flight-badge"><i class="fas fa-paper-plane"></i></div>
             </a>
         </div>
         <p style="color: var(--text-secondary)">&copy; 2026 Drone View. All rights reserved.</p>
