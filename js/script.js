@@ -502,25 +502,20 @@ const initLightbox = () => {
     lbNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
 
     // Close lightbox
-    const closeLB = (withAnimation = false) => {
-        if (withAnimation) {
-            lb.classList.add('closing');
-            setTimeout(() => {
-                lb.classList.remove('active');
-                lb.classList.remove('closing');
-                document.body.style.overflow = 'auto';
-                setTimeout(() => { lbImg.src = ''; }, 400);
-            }, 800);
-        } else {
-            lb.classList.remove('active');
+    const closeLB = () => {
+        if (!lb.classList.contains('active') || lb.classList.contains('closing')) return;
+
+        lb.classList.add('closing');
+        setTimeout(() => {
+            lb.classList.remove('active', 'closing');
             document.body.style.overflow = 'auto';
-            setTimeout(() => { lbImg.src = ''; }, 400);
-        }
+            lbImg.src = '';
+        }, 180);
     };
 
-    lbClose.addEventListener('click', () => closeLB(true));
+    lbClose.addEventListener('click', closeLB);
     lb.addEventListener('click', (e) => {
-        if (e.target === lb) closeLB(false);
+        if (e.target === lb) closeLB();
     });
 
     // Keyboard navigation (ESC + Arrows)
@@ -528,7 +523,7 @@ const initLightbox = () => {
         if (!lb.classList.contains('active')) return;
         if (e.key === 'Escape') {
             e.preventDefault();
-            closeLB(false);
+            closeLB();
         }
         if (e.key === 'ArrowLeft') {
             e.preventDefault();
