@@ -201,8 +201,8 @@ body {
     position: fixed;
     pointer-events: none;
     z-index: 10001;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s, height 0.3s, transform 0.1s ease-out;
+    transform: translate(-50%, -50%) rotate(var(--cursor-tilt, 0deg));
+    transition: width 0.3s, height 0.3s, transform 0.18s ease-out;
     display: flex;
     align-items: center;
     justify-content: center;

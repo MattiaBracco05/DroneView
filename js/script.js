@@ -245,9 +245,22 @@ function initCustomCursor() {
     `;
     document.body.appendChild(cursor);
 
+    let previousX = null;
+    let resetTiltTimeout;
+
     document.addEventListener('mousemove', (e) => {
         cursor.style.left = e.clientX + 'px';
         cursor.style.top = e.clientY + 'px';
+
+        if (previousX !== null && e.clientX !== previousX) {
+            cursor.style.setProperty('--cursor-tilt', e.clientX > previousX ? '18deg' : '-18deg');
+            clearTimeout(resetTiltTimeout);
+            resetTiltTimeout = setTimeout(() => {
+                cursor.style.setProperty('--cursor-tilt', '0deg');
+            }, 140);
+        }
+
+        previousX = e.clientX;
     });
 
     const interactiveElements = document.querySelectorAll('a, button, .gallery-item, .accessory-card, .feature-card, .social-card, .radar-waypoint');
@@ -801,4 +814,3 @@ const initCounterAnimation = () => {
 
 document.addEventListener('DOMContentLoaded', initCounterAnimation);
 initCounterAnimation();
-
