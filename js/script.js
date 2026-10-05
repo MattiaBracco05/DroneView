@@ -776,6 +776,10 @@ const initCounterAnimation = () => {
         const target = parseFloat(element.dataset.counter);
         const suffix = element.dataset.suffix || '';
         const decimals = (target % 1 !== 0) ? (target.toString().split('.')[1] || '').length : 0;
+        const decimalSeparator = element.dataset.decimalSeparator || '.';
+        const formatValue = (value) => decimals > 0
+            ? value.toFixed(decimals).replace('.', decimalSeparator)
+            : Math.round(value);
         const duration = 1800;
         const startTime = performance.now();
 
@@ -787,13 +791,13 @@ const initCounterAnimation = () => {
             const eased = 1 - Math.pow(1 - progress, 3);
             const current = target * eased;
 
-            const displayValue = decimals > 0 ? current.toFixed(decimals) : Math.round(current);
+            const displayValue = formatValue(current);
             element.textContent = displayValue + suffix;
 
             if (progress < 1) {
                 requestAnimationFrame(update);
             } else {
-                element.textContent = target + suffix;
+                element.textContent = formatValue(target) + suffix;
             }
         };
 
