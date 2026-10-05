@@ -31,6 +31,15 @@
             background: rgba(255, 255, 255, 0.05);
         }
 
+        .feature-card[data-drone-highlight] {
+            cursor: pointer;
+        }
+
+        .feature-card[data-drone-highlight]:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 4px;
+        }
+
         .drone-showcase {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -89,6 +98,50 @@
 
         .accessory-icon {
             font-size: 3rem;
+        }
+
+        .drone-visual {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 20 / 7;
+            transform: rotate(-5deg);
+        }
+
+        .drone-visual img,
+        .drone-highlights {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .drone-visual img {
+            display: block;
+            border-radius: 30px;
+            filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.6));
+            object-fit: contain;
+        }
+
+        .drone-highlights {
+            overflow: visible;
+            pointer-events: none;
+        }
+
+        .drone-highlight {
+            fill: var(--accent-color);
+            fill-opacity: 0.2;
+            stroke: var(--accent-color);
+            stroke-width: 8;
+            stroke-opacity: 0.9;
+            filter: drop-shadow(0 0 18px var(--accent-color));
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            vector-effect: non-scaling-stroke;
+        }
+
+        .drone-showcase[data-highlight="camera"] .drone-highlight--camera,
+        .drone-showcase[data-highlight="wind"] .drone-highlight--propellers {
+            opacity: 1;
         }
 
         @media (max-width: 992px) {
@@ -231,7 +284,7 @@
                         capace di catturare ogni dettaglio in 4K Ultra HD.
                     </p>
                     <div class="specs-grid">
-                        <div class="feature-card reveal reveal-up reveal-delay-1">
+                        <div class="feature-card reveal reveal-up reveal-delay-1" data-drone-highlight="camera" tabindex="0" aria-label="Evidenzia la camera sulla foto del drone">
                             <h4 style="color: var(--accent-color); font-size: 0.8rem;">CAMERA</h4>
                             <p style="font-size: 1.4rem; font-weight: 700;">4K / 30fps</p>
                         </div>
@@ -244,7 +297,7 @@
                             <p style="font-size: 1.4rem; font-weight: 700;">
                                 < 249g</p>
                         </div>
-                        <div class="feature-card reveal reveal-up reveal-delay-4">
+                        <div class="feature-card reveal reveal-up reveal-delay-4" data-drone-highlight="wind" tabindex="0" aria-label="Evidenzia le quattro eliche sulla foto del drone">
                             <h4 style="color: var(--accent-color); font-size: 0.8rem;">RESISTENZA VENTO</h4>
                             <p style="font-size: 1.4rem; font-weight: 700;">Livello 5</p>
                         </div>
@@ -254,8 +307,18 @@
                     <!-- Reliable Foldable Grey Drone Photo -->
                     <div
                         style="width: 100%; aspect-ratio: 1; background: radial-gradient(rgba(0, 210, 255, 0.2), transparent 70%); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: float 6s ease-in-out infinite;">
-                        <img src="../assets/images/DjiMini4K.png" alt="DJI Mini 4K"
-                            style="width: 100%; border-radius: 30px; transform: rotate(-5deg); filter: drop-shadow(0 20px 50px rgba(0,0,0,0.6)); object-fit: cover;">
+                        <div class="drone-visual" id="drone-visual">
+                            <img src="../assets/images/DjiMini4K.png" alt="DJI Mini 4K">
+                            <svg class="drone-highlights" viewBox="0 0 2000 700" preserveAspectRatio="none" aria-hidden="true">
+                                <path class="drone-highlight drone-highlight--camera" d="M800 350 Q800 328 824 328 H974 Q1007 332 1007 364 V447 Q1007 478 978 482 H835 Q800 478 800 450 Z"></path>
+                                <g class="drone-highlight drone-highlight--propellers">
+                                    <ellipse cx="510" cy="280" rx="290" ry="105" transform="rotate(8 510 280)"></ellipse>
+                                    <ellipse cx="1340" cy="170" rx="320" ry="120" transform="rotate(-6 1340 170)"></ellipse>
+                                    <ellipse cx="820" cy="520" rx="250" ry="76" transform="rotate(7 820 520)"></ellipse>
+                                    <ellipse cx="1660" cy="440" rx="300" ry="78" transform="rotate(-4 1660 440)"></ellipse>
+                                </g>
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>

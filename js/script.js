@@ -20,7 +20,27 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeroParticles();
     initVideoHudPlayers();
     initBackgroundVideo();
+    initDroneHighlights();
 });
+
+const initDroneHighlights = () => {
+    const showcase = document.querySelector('.drone-showcase');
+    if (!showcase) return;
+
+    showcase.querySelectorAll('[data-drone-highlight]').forEach((card) => {
+        const activate = () => {
+            showcase.dataset.highlight = card.dataset.droneHighlight;
+        };
+        const deactivate = () => {
+            if (!card.matches(':hover, :focus')) delete showcase.dataset.highlight;
+        };
+
+        card.addEventListener('pointerenter', activate);
+        card.addEventListener('pointerleave', deactivate);
+        card.addEventListener('focus', activate);
+        card.addEventListener('blur', deactivate);
+    });
+};
 
 const initBackgroundVideo = () => {
     const video = document.getElementById('bg-video');
