@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone View | Contattami</title>
+    <meta name="description" content="Contatta Drone View per informazioni, collaborazioni o richieste di servizi fotografici e video aerei.">
+    <meta name="theme-color" content="#050505">
+    <meta property="og:title" content="Drone View | Contattami">
+    <meta property="og:description" content="Scrivimi per informazioni, collaborazioni o richieste di servizi fotografici e video aerei.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.droneview.it/contatti.html">
+    <link rel="canonical" href="https://www.droneview.it/contatti.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <a href="index.html" class="logo">DRONE VIEW</a>
+                <div class="hud-theme-switcher" aria-label="Seleziona tema">
+                    <button class="theme-btn active" data-set-theme="cyan" title="Ciano Neon" aria-label="Tema ciano">
+                        <span class="theme-dot cyan"></span>
+                    </button>
+                    <button class="theme-btn" data-set-theme="amber" title="Ambra Tattico" aria-label="Tema ambra">
+                        <span class="theme-dot amber"></span>
+                    </button>
+                    <button class="theme-btn" data-set-theme="green" title="Visione Notturna" aria-label="Tema verde">
+                        <span class="theme-dot green"></span>
+                    </button>
+                </div>
+                <button class="nav-toggle" aria-label="Apri menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links">
+                    <li><a href="index.html#gallery">Galleria</a></li>
+                    <li><a href="pages/flotta.html">Flotta</a></li>
+                    <li><a href="contatti.html" aria-current="page">Contattami</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="contact-page">
+        <div class="container contact-layout">
+            <header class="contact-intro">
+                <span class="hero-tagline">Mettiamoci in contatto</span>
+                <h1>Contattami</h1>
+                <p>Hai una domanda, un progetto o una proposta di collaborazione? Raccontami cosa hai in mente: ti risponderò il prima possibile.</p>
+            </header>
+
+            <section class="contact-card" aria-label="Modulo di contatto">
+                <form class="contact-form" id="contact-form">
+                    <label for="contact-name">
+                        Nome
+                        <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="Il tuo nome" required>
+                    </label>
+                    <label for="contact-email">
+                        Email
+                        <input id="contact-email" name="email" type="email" autocomplete="email" placeholder="nome@esempio.it" required>
+                    </label>
+                    <label for="contact-title">
+                        Oggetto
+                        <input id="contact-title" name="title" type="text" placeholder="Di cosa vuoi parlare?" required>
+                    </label>
+                    <label for="contact-message">
+                        Messaggio
+                        <textarea id="contact-message" name="message" placeholder="Scrivi qui il tuo messaggio..." required></textarea>
+                    </label>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                        Invia messaggio
+                    </button>
+                    <p class="contact-form-status" id="contact-form-status" role="status" aria-live="polite"></p>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <footer id="site-footer"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const footer = document.getElementById('site-footer');
+            if (footer) {
+                fetch('footer.html')
+                    .then(response => response.ok ? response.text() : Promise.reject(new Error('Footer non disponibile')))
+                    .then(html => { footer.outerHTML = html; })
+                    .catch(error => {
+                        console.error('Impossibile caricare il footer:', error);
+                        footer.innerHTML = '<div class="container"><p style="color: var(--text-secondary)">Contatti non disponibili.</p></div>';
+                    });
+            }
+
+            const form = document.getElementById('contact-form');
+            const status = document.getElementById('contact-form-status');
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (typeof emailjs === 'undefined') {
+                status.textContent = 'Il servizio di invio non è disponibile al momento. Riprova più tardi.';
+                status.dataset.state = 'error';
+                submitButton.disabled = true;
+                return;
+            }
+
+            emailjs.init({ publicKey: '1q1mAS2ScxcLgvmbl' });
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                submitButton.disabled = true;
+                submitButton.setAttribute('aria-busy', 'true');
+                status.textContent = 'Invio del messaggio in corso...';
+                status.dataset.state = 'sending';
+
+                try {
+                    await emailjs.sendForm('service_87rsjmn', 'template_p236nwh', form);
+                    form.reset();
+                    status.textContent = 'Messaggio inviato correttamente. Grazie per avermi scritto!';
+                    status.dataset.state = 'success';
+                } catch (error) {
+                    console.error('Invio del messaggio non riuscito:', error);
+                    status.textContent = 'Non è stato possibile inviare il messaggio. Riprova tra poco.';
+                    status.dataset.state = 'error';
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.removeAttribute('aria-busy');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
