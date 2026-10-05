@@ -13,7 +13,6 @@
     <meta property="og:url" content="https://www.droneview.it/">
     <meta property="og:image" content="https://www.droneview.it/assets/images/Place/Zante.avif">
     <link rel="canonical" href="https://www.droneview.it/">
-    <link rel="icon" href="assets/images/Place/Zante.avif" type="image/avif">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -62,7 +61,7 @@
 
     <!-- Cinematic Video Break -->
     <section class="video-break">
-        <video muted playsinline id="bg-video" autoplay loop>
+        <video muted playsinline id="bg-video" autoplay loop preload="metadata" poster="assets/images/Place/poster-drone-landing.jpg">
             <source src="assets/video/DroneLanding.mp4" type="video/mp4">
             Il tuo browser non supporta i video.
         </video>
@@ -78,12 +77,18 @@
                 <h2 class="section-title">Galleria Fotografica</h2>
                 <p style="color: var(--text-secondary)">Una collezione di scatti aerei in 4K.</p>
             </div>
-            <div class="grid" style="grid-template-columns: 1fr; max-width: 600px; margin: 0 auto;">
-                <a href="pages/zante.html" class="gallery-item reveal reveal-left">
+            <div class="grid" style="max-width: 1000px; margin: 0 auto;">
+                <a href="pages/zante.html" class="gallery-item reveal reveal-up">
                     <img src="assets/images/Place/Zante.avif" alt="Zante - Navagio Beach">
                     <div class="gallery-overlay">
                         <h3>Zante</h3>
                         <p>Esplora la bellezza ionica.</p>
+                    </div>
+                </a>
+                <a href="pages/radunopaesana2026.html" class="gallery-item paesana-home-card reveal reveal-up" aria-label="Apri la galleria Raduno Paesana 2026">
+                    <div class="gallery-overlay">
+                        <h3>Raduno Paesana 2026</h3>
+                        <p>Scopri il reportage aereo.</p>
                     </div>
                 </a>
             </div>

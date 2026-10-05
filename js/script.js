@@ -19,7 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
     initLazyLoading();
     initHeroParticles();
     initVideoHudPlayers();
+    initBackgroundVideo();
 });
+
+const initBackgroundVideo = () => {
+    const video = document.getElementById('bg-video');
+    if (video) video.playbackRate = 0.5;
+};
 
 const initVideoHudPlayers = () => {
     document.querySelectorAll('.video-hud-player').forEach((card) => {
@@ -27,34 +33,64 @@ const initVideoHudPlayers = () => {
         card.dataset.hudInitialized = 'true';
 
         const video = card.querySelector('video');
-        const toggle = card.querySelector('.video-toggle');
-        const progress = card.querySelector('.video-progress');
-        const progressBar = card.querySelector('.video-progress-bar');
-        const fullscreen = card.querySelector('.video-fullscreen');
-        const liveBadge = card.querySelector('.live-badge');
+        if (!video) return;
 
-        if (!video || !toggle || !progress || !progressBar) return;
+        let hud = card.querySelector('.video-player-hud');
+        if (!hud) {
+            hud = document.createElement('div');
+            hud.className = 'video-player-hud';
+            hud.innerHTML = `
+                <span class="live-badge"><span class="live-dot"></span> PRONTO</span>
+                <div class="video-controls">
+                    <button class="video-toggle" type="button" aria-label="Riproduci video"><i class="fas fa-play"></i></button>
+                    <div class="video-progress" aria-label="Avanzamento video">
+                        <span class="video-progress-bar"></span>
+                    </div>
+                    <button class="video-fullscreen" type="button" aria-label="Schermo intero"><i class="fas fa-expand"></i></button>
+                </div>
+            `;
+            card.appendChild(hud);
+        }
+
+        const toggle = hud.querySelector('.video-toggle');
+        const progress = hud.querySelector('.video-progress');
+        const progressBar = hud.querySelector('.video-progress-bar');
+        const fullscreen = hud.querySelector('.video-fullscreen');
+        const liveBadge = hud.querySelector('.live-badge');
+        if (!toggle || !progress || !progressBar) return;
+
+        const playOverlay = document.createElement('button');
+        const title = card.querySelector('.gallery-overlay h3')?.textContent.trim();
+        playOverlay.className = 'video-start';
+        playOverlay.type = 'button';
+        playOverlay.setAttribute('aria-label', title ? `Riproduci ${title}` : 'Riproduci video');
+        playOverlay.innerHTML = '<i class="fas fa-play" aria-hidden="true"></i>';
+        card.appendChild(playOverlay);
 
         const updateHud = () => {
-            const pct = video.duration ? (video.currentTime / video.duration) * 100 : 0;
+            const pct = Number.isFinite(video.duration) && video.duration > 0
+                ? (video.currentTime / video.duration) * 100
+                : 0;
             progressBar.style.width = pct + '%';
             const isPaused = video.paused;
             toggle.innerHTML = isPaused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
-            toggle.setAttribute('aria-label', isPaused ? 'Play video' : 'Pause video');
+            toggle.setAttribute('aria-label', isPaused ? 'Riproduci video' : 'Metti in pausa il video');
+            playOverlay.hidden = !isPaused;
+            card.classList.toggle('video-has-started', video.dataset.hasStarted === 'true');
+            card.classList.toggle('is-playing', !isPaused);
             if (liveBadge) {
                 liveBadge.classList.toggle('muted', isPaused);
-                if (isPaused) {
-                    liveBadge.innerHTML = '<span class="live-dot"></span> PAUSED';
-                } else {
-                    liveBadge.innerHTML = '<span class="live-dot"></span> LIVE';
-                }
+                const status = video.dataset.hasStarted === 'true'
+                    ? (isPaused ? 'IN PAUSA' : 'IN RIPRODUZIONE')
+                    : 'PRONTO';
+                liveBadge.innerHTML = `<span class="live-dot"></span> ${status}`;
             }
         };
 
         const togglePlayback = async () => {
-            if (!video) return;
             if (video.paused) {
                 try {
+                    video.dataset.hasStarted = 'true';
                     await video.play();
                 } catch (error) {
                     console.warn('Video play blocked:', error);
@@ -65,22 +101,33 @@ const initVideoHudPlayers = () => {
             updateHud();
         };
 
+        playOverlay.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            togglePlayback();
+        });
+
         toggle.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
             togglePlayback();
         });
 
-        video.addEventListener('click', togglePlayback);
         video.addEventListener('timeupdate', updateHud);
         video.addEventListener('play', updateHud);
         video.addEventListener('pause', updateHud);
         video.addEventListener('loadedmetadata', updateHud);
+        video.addEventListener('error', () => {
+            card.classList.add('video-unavailable');
+            playOverlay.disabled = true;
+            playOverlay.setAttribute('aria-label', 'Video non disponibile');
+            if (liveBadge) liveBadge.textContent = 'VIDEO NON DISPONIBILE';
+        });
 
         progress.addEventListener('click', (e) => {
-            if (!video.duration) return;
+            if (!Number.isFinite(video.duration) || video.duration <= 0) return;
             const rect = progress.getBoundingClientRect();
-            const ratio = (e.clientX - rect.left) / rect.width;
+            const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
             video.currentTime = ratio * video.duration;
             updateHud();
         });
@@ -511,60 +558,6 @@ const initLightbox = () => {
 };
 
 initLightbox();
-
-// Video Boomerang Control
-const initVideoControl = () => {
-    const video = document.getElementById('bg-video');
-    if (!video) return;
-
-    // Velocità dimezzata per un effetto più cinematografico
-    video.playbackRate = 0.5;
-    let isReversing = false;
-    let lastTime = 0;
-
-    const reversePlayback = (timestamp) => {
-        if (!isReversing) return;
-        
-        if (!lastTime) lastTime = timestamp;
-        const delta = timestamp - lastTime;
-        lastTime = timestamp;
-
-        // Simulazione riproduzione all'indietro a 0.5x
-        if (video.currentTime > 0.05) {
-            // Sottraiamo il tempo proporzionalmente al delta per mantenere la velocità costante
-            video.currentTime -= (delta / 1000) * 0.5;
-            requestAnimationFrame(reversePlayback);
-        } else {
-            video.currentTime = 0;
-            isReversing = false;
-            lastTime = 0;
-            video.play();
-        }
-    };
-
-    // Quando il video finisce (atterraggio completato), iniziamo il decollo (reverse)
-    video.addEventListener('ended', () => {
-        isReversing = true;
-        lastTime = 0;
-        requestAnimationFrame(reversePlayback);
-    });
-
-    // Controllo visibilità per risparmio risorse
-    const videoObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                if (!isReversing) video.play();
-            } else {
-                video.pause();
-            }
-        });
-    }, { threshold: 0.1 });
-
-    videoObserver.observe(video);
-};
-
-initVideoControl();
-
 // Mobile Navigation Toggle
 const initNav = () => {
     const navToggle = document.querySelector('.nav-toggle');
@@ -649,11 +642,24 @@ const initRadarWaypoints = () => {
         const popupSpeed = popup.querySelector('.popup-speed');
         const popupMedia = popup.querySelector('.popup-media');
         const popupClose = popup.querySelector('.popup-close');
+        const radarOverlay = wrapper.querySelector('.hud-radar-overlay');
 
         const waypoints = wrapper.querySelectorAll('.radar-waypoint');
+        let suppressWaypointPopupUntil = 0;
+
+        const closePopup = (suppressWaypointReopen = false) => {
+            if (suppressWaypointReopen) {
+                suppressWaypointPopupUntil = performance.now() + 1000;
+            }
+            popup.classList.remove('active');
+            radarOverlay?.classList.remove('has-active-popup');
+            popupMedia.querySelector('video')?.pause();
+        };
 
         waypoints.forEach(wp => {
             const showPopup = () => {
+                if (performance.now() < suppressWaypointPopupUntil) return;
+
                 const title = wp.dataset.title || 'Punto di Volo';
                 const alt = wp.dataset.alt || '50m';
                 const speed = wp.dataset.speed || '12 km/h';
@@ -671,6 +677,7 @@ const initRadarWaypoints = () => {
                 }
 
                 popup.classList.add('active');
+                radarOverlay?.classList.add('has-active-popup');
             };
 
             wp.addEventListener('mouseenter', showPopup);
@@ -679,10 +686,17 @@ const initRadarWaypoints = () => {
 
         if (popupClose) {
             popupClose.addEventListener('click', (e) => {
+                e.preventDefault();
                 e.stopPropagation();
-                popup.classList.remove('active');
+                closePopup(true);
             });
         }
+
+        radarOverlay?.addEventListener('click', (e) => {
+            if (e.target === radarOverlay && popup.classList.contains('active')) {
+                closePopup(true);
+            }
+        });
     });
 };
 

@@ -32,6 +32,41 @@
     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../assets/images/Place/VallePo.jpg') center/cover no-repeat;
 }
 
+.mission-hero.radunopaesana-hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../assets/images/Place/RadunoPaesana2026.avif');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.paesana-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.paesana-gallery .video-card {
+    grid-column: auto;
+    aspect-ratio: 16 / 9;
+}
+
+.paesana-gallery .video-card.paesana-video-wide {
+    grid-column: 1 / -1;
+}
+
+.paesana-gallery .gallery-item {
+    grid-column: 1 / -1;
+    aspect-ratio: 21 / 9;
+    border-radius: 24px;
+}
+
+.gallery-item.paesana-home-card {
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.02) 72%), url('../assets/images/Place/RadunoPaesana2026.avif');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 .mission-content {
     position: relative;
     z-index: 10;
@@ -1095,6 +1130,10 @@ nav .container {
     border: 1px solid rgba(0, 210, 255, 0.2);
 }
 
+.hud-radar-overlay.has-active-popup {
+    pointer-events: auto;
+}
+
 .radar-sweep {
     position: absolute;
     top: 50%;
@@ -1289,6 +1328,8 @@ nav .container {
     .radar-tag.top-right { display: none; }
     .map-radar-wrapper .map-container { height: 420px; }
     .hud-preview-popup { width: 280px; bottom: 15px; }
+    .paesana-gallery { grid-template-columns: 1fr; }
+    .paesana-gallery .gallery-item { aspect-ratio: 16 / 9; }
 }
 
 /* ====== REUSABLE BUTTON STYLES ====== */
@@ -1434,6 +1475,56 @@ nav .container {
     gap: 1rem;
     z-index: 5;
     pointer-events: none;
+}
+
+.video-hud-player:not(.video-has-started) .video-controls {
+    display: none;
+}
+
+.video-start {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 6;
+    width: 4.5rem;
+    height: 4.5rem;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--accent-color);
+    border-radius: 50%;
+    background: rgba(8, 12, 20, 0.76);
+    color: var(--text-primary);
+    font-size: 1.35rem;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 24px rgba(0, 210, 255, 0.25);
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.video-start:hover {
+    transform: translate(-50%, -50%) scale(1.08);
+    background: rgba(0, 210, 255, 0.22);
+    box-shadow: 0 0 32px rgba(0, 210, 255, 0.4);
+}
+
+.video-start:focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: 4px;
+}
+
+.video-start[hidden] {
+    display: none;
+}
+
+.video-start:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.video-unavailable .video-start {
+    font-size: 0.8rem;
 }
 
 .live-badge {
