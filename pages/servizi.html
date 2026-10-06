@@ -65,7 +65,7 @@
                     <h2 class="section-title">Per cosa puoi contattarmi</h2>
                     <p class="services-intro">Scegli il servizio più adatto o scrivimi per costruire insieme la soluzione giusta.</p>
                 </div>
-                <div class="services-grid">
+                <div class="services-grid" role="region" aria-label="Elenco dei servizi" tabindex="0">
                     <article class="service-card reveal reveal-up">
                         <span class="service-icon"><i class="fas fa-video" aria-hidden="true"></i></span>
                         <h3>Video aerei</h3>
@@ -97,6 +97,14 @@
                         <p>Video e immagini d'impatto, pensati per raccontare la tua attività sui canali digitali.</p>
                     </article>
                 </div>
+                <div class="services-pagination" role="group" aria-label="Seleziona un servizio">
+                    <button class="services-pagination-dot" type="button" aria-label="Mostra Video aerei" aria-current="true"></button>
+                    <button class="services-pagination-dot" type="button" aria-label="Mostra Fotografia aerea"></button>
+                    <button class="services-pagination-dot" type="button" aria-label="Mostra Eventi e manifestazioni"></button>
+                    <button class="services-pagination-dot" type="button" aria-label="Mostra Immobili e strutture"></button>
+                    <button class="services-pagination-dot" type="button" aria-label="Mostra Turismo e territorio"></button>
+                    <button class="services-pagination-dot" type="button" aria-label="Mostra Contenuti per social"></button>
+                </div>
             </div>
         </section>
 
@@ -121,6 +129,52 @@
     <script src="../js/script.js"></script>
     <script>
         window.addEventListener('DOMContentLoaded', () => {
+            const servicesGrid = document.querySelector('.services-grid');
+            const serviceCards = servicesGrid ? [...servicesGrid.querySelectorAll('.service-card')] : [];
+            const paginationDots = [...document.querySelectorAll('.services-pagination-dot')];
+
+            if (servicesGrid && serviceCards.length === paginationDots.length) {
+                let scrollFrame = null;
+
+                const updateActiveDot = () => {
+                    const gridLeft = servicesGrid.getBoundingClientRect().left;
+                    const activeIndex = serviceCards.reduce((closestIndex, card, index) => {
+                        const closestDistance = Math.abs(serviceCards[closestIndex].getBoundingClientRect().left - gridLeft);
+                        const distance = Math.abs(card.getBoundingClientRect().left - gridLeft);
+                        return distance < closestDistance ? index : closestIndex;
+                    }, 0);
+
+                    paginationDots.forEach((dot, index) => {
+                        if (index === activeIndex) {
+                            dot.setAttribute('aria-current', 'true');
+                        } else {
+                            dot.removeAttribute('aria-current');
+                        }
+                    });
+                };
+
+                servicesGrid.addEventListener('scroll', () => {
+                    if (scrollFrame !== null) return;
+                    scrollFrame = requestAnimationFrame(() => {
+                        updateActiveDot();
+                        scrollFrame = null;
+                    });
+                }, { passive: true });
+
+                paginationDots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => {
+                        const gridLeft = servicesGrid.getBoundingClientRect().left;
+                        const cardLeft = serviceCards[index].getBoundingClientRect().left;
+                        servicesGrid.scrollTo({
+                            left: servicesGrid.scrollLeft + cardLeft - gridLeft,
+                            behavior: 'smooth'
+                        });
+                    });
+                });
+
+                updateActiveDot();
+            }
+
             const footer = document.getElementById('site-footer');
             if (!footer) return;
             fetch('footer.html')
