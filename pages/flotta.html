@@ -266,9 +266,9 @@
                 </button>
                 <ul class="nav-links">
                     <li><a href="../index.html#gallery">Galleria</a></li>
-                    <li><a href="../servizi.html">Servizi</a></li>
+                    <li><a href="servizi.html">Servizi</a></li>
                     <li><a href="flotta.html" style="color: var(--accent-color)">Flotta</a></li>
-                    <li><a href="../contatti.html">Contatti</a></li>
+                    <li><a href="contatti.html">Contatti</a></li>
                 </ul>
             </div>
         </div>
@@ -378,7 +378,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             const footer = document.getElementById('site-footer');
             if (!footer) return;
-            fetch('../footer.html')
+            fetch('footer.html')
                 .then(response => response.ok ? response.text() : Promise.reject())
                 .then(html => { footer.outerHTML = html; })
                 .catch(() => {

@@ -42,9 +42,9 @@
                 </button>
                 <ul class="nav-links">
                     <li><a href="#gallery">Galleria</a></li>
-                    <li><a href="servizi.html">Servizi</a></li>
+                    <li><a href="pages/servizi.html">Servizi</a></li>
                     <li><a href="pages/flotta.html">Flotta</a></li>
-                    <li><a href="contatti.html">Contatti</a></li>
+                    <li><a href="pages/contatti.html">Contatti</a></li>
                 </ul>
             </div>
         </div>
@@ -103,7 +103,7 @@
                 <div class="feature-highlight-content reveal reveal-left">
                     <h2 class="section-title">Scopri i miei servizi</h2>
                     <p style="color: var(--text-secondary); margin-bottom: 2.5rem;">Video e fotografie aeree per raccontare eventi, valorizzare immobili e strutture, promuovere il territorio e creare contenuti per i social.</p>
-                    <a href="servizi.html" class="btn btn-primary btn-lg">Scopri i Servizi</a>
+                    <a href="pages/servizi.html" class="btn btn-primary btn-lg">Scopri i Servizi</a>
                 </div>
                 <div class="feature-highlight-image reveal reveal-right">
                     <img src="assets/images/DJI Servizi 1.png" alt="Drone DJI in volo per la realizzazione di servizi aerei">
@@ -135,7 +135,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             const footer = document.getElementById('site-footer');
             if (!footer) return;
-            fetch('footer.html')
+            fetch('pages/footer.html')
                 .then(response => response.ok ? response.text() : Promise.reject())
                 .then(html => { footer.outerHTML = html; })
                 .catch(() => {
