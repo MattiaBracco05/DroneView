@@ -1285,8 +1285,7 @@ html.dv-lock-scroll {
     transform: translate(-50%, 40px);
     padding: 0.5rem 1rem;
     border-radius: 999px;
-    background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.7);
     font-size: 0.72rem;
     letter-spacing: 0.1em;
     white-space: nowrap;
@@ -1312,8 +1311,8 @@ html.dv-lock-scroll {
     padding: 0.45rem;
     border: 1px solid var(--glass-border);
     border-radius: 999px;
-    background: rgba(5, 8, 12, 0.7);
-    backdrop-filter: blur(12px);
+    /* Solid instead of backdrop-blurred: a blur over the live WebGL canvas is recomputed every frame */
+    background: rgba(5, 8, 12, 0.85);
     opacity: 0;
     transition: opacity 0.6s ease;
 }
@@ -2544,4 +2543,14 @@ html.dv-lock-scroll {
     padding: 0 1.4rem 1.3rem;
     color: var(--text-secondary);
     line-height: 1.7;
+}
+
+/* Phones: no live blur behind the floating HUD (it sits over moving content and costs a
+   full-screen blur per frame on iOS); a more opaque background keeps it readable */
+@media (hover: none) {
+    .dv-hud {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(5, 8, 12, 0.9);
+    }
 }

@@ -38,6 +38,23 @@
         state.tmy = (e.clientY / window.innerHeight) * 2 - 1;
     }, { passive: true });
 
+    // Layout measurements cached outside the animation loop: reading sizes every frame
+    // forces the browser to recompute layout, which is what makes phones stutter
+    const layout = { docHeight: 0, viewport: window.innerHeight };
+    const measureCallbacks = [];
+    const measure = () => {
+        layout.viewport = window.innerHeight;
+        layout.docHeight = document.documentElement.scrollHeight - layout.viewport;
+        measureCallbacks.forEach((fn) => fn());
+    };
+    const onMeasure = (fn) => {
+        measureCallbacks.push(fn);
+        fn();
+    };
+    if ('ResizeObserver' in window) new ResizeObserver(measure).observe(document.body);
+    window.addEventListener('resize', measure, { passive: true });
+    window.addEventListener('load', measure);
+
     let flightStart = Number(session.get('dv_flight_start'));
     if (!flightStart) {
         flightStart = Date.now();
@@ -52,6 +69,10 @@
         let master, filter, noiseGain, chopLfo;
         const rotors = [];
         let enabled = false;
+        // Phone speakers barely reproduce frequencies under ~300 Hz: pitch the hum up and open the filter
+        const smallSpeaker = !canHover;
+        const baseHz = smallSpeaker ? 230 : 150;
+        const baseCutoff = smallSpeaker ? 1300 : 650;
 
         const build = () => {
             const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -75,14 +96,14 @@
 
             filter = ctx.createBiquadFilter();
             filter.type = 'lowpass';
-            filter.frequency.value = 650;
+            filter.frequency.value = baseCutoff;
             filter.Q.value = 0.8;
             filter.connect(chop);
 
             [1, 1.013, 0.988, 1.024].forEach((ratio) => {
                 const osc = ctx.createOscillator();
                 osc.type = 'sawtooth';
-                osc.frequency.value = 160 * ratio;
+                osc.frequency.value = baseHz * ratio;
                 const gain = ctx.createGain();
                 gain.gain.value = 0.16;
                 osc.connect(gain).connect(filter);
@@ -107,12 +128,26 @@
             return true;
         };
 
+        // iPhone: Web Audio is silenced by the ring/silent switch unless the page plays
+        // "media" audio. Switching the audio session (Safari 16.4+) and playing a tiny silent
+        // clip inside the tap moves the page into the media category.
+        let silentClip = null;
+        const unlockIOS = () => {
+            safe(() => { if (navigator.audioSession) navigator.audioSession.type = 'playback'; });
+            if (!silentClip) {
+                silentClip = new Audio('data:audio/wav;base64,UklGRrQBAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YZABAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA');
+                silentClip.setAttribute('playsinline', '');
+            }
+            silentClip.play().catch(() => {});
+        };
+
         const setEnabled = (value) => {
+            if (value) unlockIOS();
             if (value && !ctx && !build()) return false;
             if (!ctx) return false;
             enabled = value;
             if (value) ctx.resume();
-            master.gain.setTargetAtTime(value ? 0.07 : 0, ctx.currentTime, value ? 0.6 : 0.15);
+            master.gain.setTargetAtTime(value ? (smallSpeaker ? 0.16 : 0.07) : 0, ctx.currentTime, value ? 0.6 : 0.15);
             return true;
         };
 
@@ -120,10 +155,10 @@
             if (!ctx || !enabled) return;
             const now = ctx.currentTime;
             rotors.forEach(({ osc, ratio }) => {
-                osc.frequency.setTargetAtTime((150 + t * 110) * ratio, now, 0.25);
+                osc.frequency.setTargetAtTime((baseHz + t * 110) * ratio, now, 0.25);
             });
             chopLfo.frequency.setTargetAtTime(30 + t * 22, now, 0.25);
-            filter.frequency.setTargetAtTime(600 + t * 1100, now, 0.25);
+            filter.frequency.setTargetAtTime(baseCutoff + t * 1100, now, 0.25);
             noiseGain.gain.setTargetAtTime(0.035 + t * 0.11, now, 0.25);
         };
 
@@ -145,7 +180,7 @@
         document.addEventListener('visibilitychange', () => {
             if (!ctx) return;
             if (document.hidden) ctx.suspend();
-            else if (enabled) ctx.resume();
+            else if (enabled) ctx.resume(); // also recovers iOS's "interrupted" state
         });
 
         return { setEnabled, setThrottle, shutter, isEnabled: () => enabled };
@@ -167,14 +202,14 @@
     };
 
     // Browsers only start audio after a gesture: resume the saved preference on the first one
+    // (iOS only accepts touchend/click as an audio-unlocking gesture, not pointerdown)
     if (local.get('dv_sound') === '1') {
+        const events = ['touchend', 'click', 'keydown'];
         const resume = () => {
             setSound(true);
-            window.removeEventListener('pointerdown', resume);
-            window.removeEventListener('keydown', resume);
+            events.forEach((type) => window.removeEventListener(type, resume, true));
         };
-        window.addEventListener('pointerdown', resume, { once: true });
-        window.addEventListener('keydown', resume, { once: true });
+        events.forEach((type) => window.addEventListener(type, resume, true));
     }
 
     /* ------------------------------------------------------------------
@@ -384,9 +419,11 @@
         const horizon = hero.querySelector('.dv-horizon');
         const pitchLadder = hero.querySelector('.dv-pitch-ladder');
 
+        let heroHeight = 1;
+        onMeasure(() => { heroHeight = hero.offsetHeight || 1; });
+
         return () => {
-            const h = hero.offsetHeight || 1;
-            const p = clamp(state.scrollY / h, 0, 1);
+            const p = clamp(state.scrollY / heroHeight, 0, 1);
             hero.style.setProperty('--hero-p', p.toFixed(4));
             hero.style.setProperty('--mx', state.mx.toFixed(4));
             hero.style.setProperty('--my', state.my.toFixed(4));
@@ -407,11 +444,15 @@
         const bar = section.querySelector('.dv-ascent-bar span');
         const captions = [...section.querySelectorAll('[data-at]')];
         let lastAlt = -1;
+        let sectionTop = 0;
+        let travel = 1;
+        onMeasure(() => {
+            sectionTop = section.getBoundingClientRect().top + window.scrollY;
+            travel = section.offsetHeight - layout.viewport;
+        });
 
         return () => {
-            const rect = section.getBoundingClientRect();
-            const travel = section.offsetHeight - window.innerHeight;
-            const p = clamp(-rect.top / (travel || 1), 0, 1);
+            const p = clamp((state.scrollY - sectionTop) / (travel || 1), 0, 1);
             const eased = 1 - Math.pow(1 - p, 2.2);
 
             const scale = lerp(3.4, 1.02, eased);
@@ -525,9 +566,10 @@
         };
 
         const resize = () => {
-            const dpr = Math.min(window.devicePixelRatio || 1, 2);
-            const w = Math.max(1, Math.round(canvas.clientWidth * dpr));
-            const h = Math.max(1, Math.round(canvas.clientHeight * dpr));
+            // Phones have 3x screens: 1.5x is visually identical for a moving panorama and far cheaper
+            const dpr = Math.min(window.devicePixelRatio || 1, canHover ? 2 : 1.5);
+            const w = Math.max(1, Math.round(canvasSize.w * dpr));
+            const h = Math.max(1, Math.round(canvasSize.h * dpr));
             if (canvas.width !== w || canvas.height !== h) {
                 canvas.width = w;
                 canvas.height = h;
@@ -546,13 +588,19 @@
 
         const headingDeg = () => ((view.yaw * 180 / Math.PI) % 360 + 360) % 360;
 
+        const shown = {};
+        const show = (key, el, value) => {
+            if (shown[key] === value) return;
+            shown[key] = value;
+            el.textContent = value;
+        };
         const updateReadouts = () => {
             const hdg = headingDeg();
-            readHdg.textContent = pad(hdg, 3) + '°';
-            readPitch.textContent = `${Math.round(view.pitch * 180 / Math.PI)}°`;
-            readZoom.textContent = `${(1.35 / view.fov).toFixed(1)}x`;
+            show('hdg', readHdg, pad(hdg, 3) + '°');
+            show('pitch', readPitch, `${Math.round(view.pitch * 180 / Math.PI)}°`);
+            show('zoom', readZoom, `${(1.35 / view.fov).toFixed(1)}x`);
             // 8 labels per lap, each 64px wide: 360° = 512px
-            compassTape.style.transform = `translateX(${-(512 + hdg / 360 * 512)}px)`;
+            compassTape.style.transform = `translateX(${-(512 + hdg / 360 * 512).toFixed(1)}px)`;
         };
 
         const tick = () => {
@@ -581,27 +629,49 @@
             requestAnimationFrame(tick);
         };
 
-        const start = () => {
-            if (started) return;
-            started = true;
+        let panoImage = null;
+        const canvasSize = { w: canvas.clientWidth, h: canvas.clientHeight };
+        const readCanvasSize = () => {
+            canvasSize.w = canvas.clientWidth;
+            canvasSize.h = canvas.clientHeight;
+            requestFrame();
+        };
+        if ('ResizeObserver' in window) new ResizeObserver(readCanvasSize).observe(canvas);
+        else window.addEventListener('resize', readCanvasSize, { passive: true });
 
-            gl = canvas.getContext('webgl', { preserveDrawingBuffer: true, antialias: false })
-                || canvas.getContext('experimental-webgl', { preserveDrawingBuffer: true });
-            if (!gl) {
-                fail('WebGL non disponibile su questo dispositivo.');
-                return;
-            }
+        // Touch devices get a smaller texture: same look on a phone screen, half the GPU memory
+        // (big textures are what makes iOS Safari drop the WebGL context)
+        const maxTextureWidth = () => Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE), canHover ? 4096 : 3072);
 
-            try {
-                program = gl.createProgram();
-                gl.attachShader(program, compile(gl.VERTEX_SHADER, vertexSrc));
-                gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fragmentSrc));
-                gl.linkProgram(program);
-                gl.useProgram(program);
-            } catch (error) {
-                fail('Impossibile avviare il visore 360°.');
-                return;
+        const uploadTexture = () => {
+            let source = panoImage;
+            const width = maxTextureWidth();
+            if (panoImage.naturalWidth > width) {
+                const scaled = document.createElement('canvas');
+                scaled.width = width;
+                scaled.height = width / 2;
+                scaled.getContext('2d').drawImage(panoImage, 0, 0, scaled.width, scaled.height);
+                source = scaled;
             }
+            const texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, source);
+            // Linear without mipmaps avoids a visible seam where longitude wraps
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            wrap.classList.add('is-ready');
+            requestFrame();
+        };
+
+        // Program, geometry and uniforms; also used to rebuild after a lost context
+        const setupGL = () => {
+            program = gl.createProgram();
+            gl.attachShader(program, compile(gl.VERTEX_SHADER, vertexSrc));
+            gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fragmentSrc));
+            gl.linkProgram(program);
+            gl.useProgram(program);
 
             const buffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -616,29 +686,46 @@
                 fov: gl.getUniformLocation(program, 'fov'),
                 aspect: gl.getUniformLocation(program, 'aspect')
             };
+        };
+
+        const start = () => {
+            if (started) return;
+            started = true;
+
+            // No preserveDrawingBuffer: it forces an extra copy every frame on mobile GPUs.
+            // Screenshots render and read the frame in the same task instead.
+            gl = canvas.getContext('webgl', { antialias: false, powerPreference: 'high-performance' })
+                || canvas.getContext('experimental-webgl');
+            if (!gl) {
+                fail('WebGL non disponibile su questo dispositivo.');
+                return;
+            }
+
+            try {
+                setupGL();
+            } catch (error) {
+                fail('Impossibile avviare il visore 360°.');
+                return;
+            }
+
+            canvas.addEventListener('webglcontextlost', (e) => {
+                e.preventDefault();
+                wrap.classList.remove('is-ready');
+            });
+            canvas.addEventListener('webglcontextrestored', () => {
+                try {
+                    setupGL();
+                    if (panoImage) uploadTexture();
+                } catch (error) {
+                    fail('Impossibile riavviare il visore 360°.');
+                }
+            });
 
             const img = new Image();
             img.decoding = 'async';
             img.onload = () => {
-                let source = img;
-                const maxSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
-                if (img.naturalWidth > maxSize) {
-                    const scaled = document.createElement('canvas');
-                    scaled.width = maxSize;
-                    scaled.height = maxSize / 2;
-                    scaled.getContext('2d').drawImage(img, 0, 0, scaled.width, scaled.height);
-                    source = scaled;
-                }
-                const texture = gl.createTexture();
-                gl.bindTexture(gl.TEXTURE_2D, texture);
-                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, source);
-                // Linear without mipmaps avoids a visible seam where longitude wraps
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-                wrap.classList.add('is-ready');
-                requestFrame();
+                panoImage = img;
+                uploadTexture();
             };
             img.onerror = () => fail('Impossibile caricare il panorama.');
             img.src = wrap.dataset.panoSrc;
@@ -678,7 +765,7 @@
         });
         canvas.addEventListener('pointermove', (e) => {
             if (!view.dragging || e.pointerId !== pointerId) return;
-            const factor = view.fov / canvas.clientHeight;
+            const factor = view.fov / (canvasSize.h || 1);
             const dx = (e.clientX - lastX) * factor;
             const dy = (e.clientY - lastY) * factor;
             lastX = e.clientX;
@@ -1350,7 +1437,7 @@
             state.mx = lerp(state.mx, state.tmx, ease);
             state.my = lerp(state.my, state.tmy, ease);
 
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const docHeight = layout.docHeight;
             const alt = docHeight > 0 ? clamp(state.scrollY / docHeight, 0, 1) * MAX_ALT : 0;
 
             updateHud(alt);
