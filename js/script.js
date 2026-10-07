@@ -15,6 +15,19 @@ document.body.appendChild(overlay);
 // Its links are written relative to the site root and resolved here.
 const siteRoot = new URL('../', document.currentScript.src);
 
+// "Vai al contenuto" link for keyboard and screen-reader users
+const addSkipLink = (nav) => {
+    const target = document.querySelector('main') || nav.nextElementSibling;
+    if (!target || document.querySelector('.skip-link')) return;
+    if (!target.id) target.id = 'contenuto';
+    target.setAttribute('tabindex', '-1');
+    const skip = document.createElement('a');
+    skip.className = 'skip-link';
+    skip.href = `#${target.id}`;
+    skip.textContent = 'Vai al contenuto';
+    document.body.prepend(skip);
+};
+
 const loadNavbar = () => {
     const placeholder = document.getElementById('site-nav');
     if (!placeholder) return;
@@ -36,6 +49,7 @@ const loadNavbar = () => {
             });
 
             placeholder.replaceWith(nav);
+            addSkipLink(nav);
             initNav();
             initThemeSwitcher();
             initAnchorLinks();
@@ -267,6 +281,7 @@ const initLazyLoading = () => {
 // Custom Drone Cursor
 function initCustomCursor() {
     if (window.innerWidth <= 1024) return;
+    document.documentElement.classList.add('has-custom-cursor');
 
     const cursor = document.createElement('div');
     cursor.className = 'custom-cursor';
@@ -621,6 +636,8 @@ const initNav = () => {
             e.stopPropagation();
         }
         const isOpen = navLinks.classList.toggle('active');
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+        navToggle.setAttribute('aria-label', isOpen ? 'Chiudi menu' : 'Apri menu');
         const icon = navToggle.querySelector('i');
         if (icon) {
             if (isOpen) {

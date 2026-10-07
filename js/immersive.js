@@ -186,7 +186,9 @@
     };
 
     const initBoot = () => {
-        if (session.get('dv_booted')) {
+        // Only the homepage greets with the preflight check: visitors landing on an inner page
+        // (often straight from a search) go directly to the content
+        if (session.get('dv_booted') || !document.querySelector('.dv-hero')) {
             takeoff();
             return;
         }
@@ -255,7 +257,7 @@
         timers.push(setTimeout(() => {
             boot.classList.add('dv-boot-ready');
             actions.querySelector('.dv-boot-go')?.focus({ preventScroll: true });
-            autoTimer = setTimeout(() => finish(false), 4500);
+            autoTimer = setTimeout(() => finish(false), 2500);
         }, 450 + steps.length * stepDelay));
 
         boot.querySelectorAll('.dv-boot-go').forEach((btn) => {
@@ -497,7 +499,8 @@
                 vec3 d = normalize(vec3(v.x * t * aspect, v.y * t, -1.0));
                 float cp = cos(pitch), sp = sin(pitch);
                 d = vec3(d.x, d.y * cp - d.z * sp, d.y * sp + d.z * cp);
-                float cy = cos(yaw), sy = sin(yaw);
+                // Positive yaw turns the view to the right (east), like a compass heading
+                float cy = cos(yaw), sy = -sin(yaw);
                 d = vec3(d.x * cy + d.z * sy, d.y, -d.x * sy + d.z * cy);
                 float lon = atan(d.x, -d.z);
                 float lat = asin(clamp(d.y, -1.0, 1.0));
@@ -1030,11 +1033,13 @@
                 scaleVerdict.innerHTML = "Scegli un oggetto da mettere sull'altro piatto";
             } else {
                 objectWeight = Number(btn.dataset.weight);
-                scaleItem.textContent = btn.dataset.icon;
+                // Objects are an emoji or, when no emoji fits (the 33 cl can), an image
+                if (btn.dataset.img) scaleItem.innerHTML = `<img src="${btn.dataset.img}" alt="">`;
+                else scaleItem.textContent = btn.dataset.icon;
                 scaleItem.classList.remove('is-dropping');
                 void scaleItem.offsetWidth;
                 scaleItem.classList.add('is-dropping');
-                scaleObjectRead.textContent = `~${objectWeight} g`;
+                scaleObjectRead.textContent = btn.querySelector('small').textContent;
                 const diff = Math.abs(DRONE_WEIGHT - objectWeight);
                 if (diff <= 5) scaleVerdict.innerHTML = `<b>Praticamente in equilibrio</b> con ${btn.dataset.name}`;
                 else if (objectWeight < DRONE_WEIGHT) scaleVerdict.innerHTML = `Il Mini 4K pesa <b>${diff} g in più</b> di ${btn.dataset.name}`;
@@ -1125,9 +1130,10 @@
             card.addEventListener('click', () => {
                 locked = locked === value ? null : value;
                 setMode(locked || value);
-                // On narrow screens the visual sits above the cards: bring it into view
+                // On narrow screens the visual sits above the cards: bring it fully into view
                 const rect = frame.getBoundingClientRect();
-                if (rect.bottom < 80 || rect.top > window.innerHeight - 80) {
+                const navBottom = document.querySelector('nav')?.getBoundingClientRect().bottom || 0;
+                if (rect.top < navBottom || rect.bottom > window.innerHeight) {
                     frame.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
                 }
             });

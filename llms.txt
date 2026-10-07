@@ -1,0 +1,31 @@
+# Drone View
+
+> Drone View (mydroneview.it) realizza fotografie e video aerei con drone DJI Mini 4K per eventi e manifestazioni, immobili e strutture, turismo e territorio e contenuti per i social. Il sito è in italiano e include un portfolio di missioni, un panorama sferico a 360° esplorabile e una pagina dedicata al drone.
+
+Per richiedere un servizio o un preventivo si usa il modulo nella pagina Contatti.
+
+## Servizi
+
+- [Servizi aerei](https://mydroneview.it/pages/servizi.html): video aerei, fotografia aerea, eventi e manifestazioni, immobili e strutture, turismo e territorio, contenuti per social. Include le domande frequenti.
+- [Contatti e preventivi](https://mydroneview.it/pages/contatti.html): modulo per richiedere informazioni, collaborazioni o un servizio.
+
+## Portfolio
+
+- [Missione Zante](https://mydroneview.it/pages/zante.html): foto e video aerei dell'isola di Zante (Grecia): Porto Limniosas, Navagio, Cameo Island, con mappa radar dei punti di ripresa.
+- [Raduno Paesana 2026](https://mydroneview.it/pages/radunopaesana2026.html): reportage aereo del raduno a Paesana (Piemonte): piazza, campanile e rotonda.
+- [Home e panorama 360°](https://mydroneview.it/): presentazione, missioni e panorama sferico di Zante al tramonto.
+
+## Attrezzatura
+
+- [Flotta](https://mydroneview.it/pages/flotta.html): DJI Mini 4K — meno di 249 g (classe C0), video 4K a 30 fps, foto 12 MP con sensore 1/2.3" CMOS, gimbal a 3 assi, resistenza al vento livello 5 (fino a circa 38 km/h).
+
+## Social
+
+- [Instagram](https://www.instagram.com/matti_bracco)
+- [Facebook](https://www.facebook.com/share/18AwK8TuZz/)
+- [Threads](https://www.threads.com/@matti_bracco)
+
+## Optional
+
+- [Privacy Policy](https://mydroneview.it/pages/privacy.html)
+- [Cookie Policy](https://mydroneview.it/pages/cookie.html)

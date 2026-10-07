@@ -194,7 +194,36 @@ body {
     font-family: 'Outfit', sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
-    cursor: none; /* Nasconde il cursore di sistema */
+}
+
+/* The system cursor is hidden only once the custom drone cursor is actually running */
+html.has-custom-cursor body {
+    cursor: none;
+}
+
+/* Keyboard focus stays clearly visible on every interactive element */
+:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 3px;
+}
+
+.skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 13000;
+    padding: 0.7rem 1.1rem;
+    border-radius: 10px;
+    background: var(--accent-color);
+    color: #050505;
+    font-weight: 700;
+    text-decoration: none;
+    transform: translateY(-160%);
+    transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+    transform: none;
 }
 
 /* Custom Drone Cursor */
@@ -233,9 +262,6 @@ body {
 
 /* Hide custom cursor on mobile */
 @media (max-width: 1024px) {
-    body {
-        cursor: auto;
-    }
     .custom-cursor {
         display: none;
     }
@@ -477,6 +503,15 @@ nav .container {
 
 .nav-links a[aria-current="page"] {
     color: var(--accent-color);
+}
+
+/* Tablet widths: full navbar still visible, so tighten it to avoid overlaps */
+@media (min-width: 769px) and (max-width: 1100px) {
+    .logo-mark { width: 32px; height: 32px; }
+    .logo-word { font-size: 1rem; letter-spacing: 0.12em; }
+    .hud-theme-switcher { margin-left: 1rem; }
+    .nav-links { gap: 1.2rem; }
+    .nav-links a { font-size: 0.8rem; }
 }
 
 .nav-links {
@@ -747,7 +782,7 @@ nav .container {
     padding: 5rem 0;
     background:
         linear-gradient(90deg, rgba(5, 5, 5, 0.88), rgba(5, 5, 5, 0.3)),
-        url('../assets/images/DJI%20Servizi%201.png') center 40%/cover no-repeat;
+        url('../assets/images/DJI%20Servizi%201.avif') center 40%/cover no-repeat;
     background-size: 100% 100%, 100% auto;
     background-color: #050505;
 }
