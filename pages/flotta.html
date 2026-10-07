@@ -7,15 +7,17 @@
     <title>Drone View | Flotta</title>
     <meta name="description" content="Scopri la flotta di droni e la tecnologia dietro i video e le fotografie aeree di Drone View.">
     <meta name="theme-color" content="#050505">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo-mark.svg">
     <meta property="og:title" content="Drone View | Flotta">
     <meta property="og:description" content="Scopri la flotta di droni e la tecnologia dietro i video e le fotografie aeree di Drone View.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.droneview.it/pages/flotta.html">
     <meta property="og:image" content="https://www.droneview.it/assets/images/Flotta.jpg">
     <link rel="canonical" href="https://www.droneview.it/pages/flotta.html">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/immersive.css">
     <style>
         .feature-card {
             background: var(--card-bg);
@@ -98,50 +100,6 @@
 
         .accessory-icon {
             font-size: 3rem;
-        }
-
-        .drone-visual {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 20 / 7;
-            transform: rotate(-5deg);
-        }
-
-        .drone-visual img,
-        .drone-highlights {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .drone-visual img {
-            display: block;
-            border-radius: 30px;
-            filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.6));
-            object-fit: contain;
-        }
-
-        .drone-highlights {
-            overflow: visible;
-            pointer-events: none;
-        }
-
-        .drone-highlight {
-            fill: var(--accent-color);
-            fill-opacity: 0.2;
-            stroke: var(--accent-color);
-            stroke-width: 8;
-            stroke-opacity: 0.9;
-            filter: drop-shadow(0 0 18px var(--accent-color));
-            opacity: 0;
-            transition: opacity 0.25s ease;
-            vector-effect: non-scaling-stroke;
-        }
-
-        .drone-showcase[data-highlight="camera"] .drone-highlight--camera,
-        .drone-showcase[data-highlight="wind"] .drone-highlight--propellers {
-            opacity: 1;
         }
 
         @media (max-width: 992px) {
@@ -246,33 +204,7 @@
 
 <body>
 
-    <nav>
-        <div class="container">
-            <div class="nav-container">
-                <a href="../index.html" class="logo">DRONE VIEW</a>
-                <div class="hud-theme-switcher" aria-label="HUD Theme Switcher">
-                    <button class="theme-btn active" data-set-theme="cyan" title="Ciano Neon">
-                        <span class="theme-dot cyan"></span>
-                    </button>
-                    <button class="theme-btn" data-set-theme="amber" title="Ambra Tattico">
-                        <span class="theme-dot amber"></span>
-                    </button>
-                    <button class="theme-btn" data-set-theme="green" title="Visione Notturna">
-                        <span class="theme-dot green"></span>
-                    </button>
-                </div>
-                <button class="nav-toggle" aria-label="Toggle menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <ul class="nav-links">
-                    <li><a href="../index.html#gallery">Galleria</a></li>
-                    <li><a href="servizi.html">Servizi</a></li>
-                    <li><a href="flotta.html" style="color: var(--accent-color)">Flotta</a></li>
-                    <li><a href="contatti.html">Contatti</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <nav id="site-nav" aria-label="Navigazione principale"></nav>
 
     <main class="hero-mini">
         <div class="container">
@@ -285,41 +217,100 @@
                         capace di catturare ogni dettaglio in 4K Ultra HD.
                     </p>
                     <div class="specs-grid">
-                        <div class="feature-card reveal reveal-up reveal-delay-1" data-drone-highlight="camera" tabindex="0" aria-label="Evidenzia la camera sulla foto del drone">
+                        <div class="feature-card reveal reveal-up reveal-delay-1" data-drone-highlight="camera" tabindex="0" aria-label="Zoom sulla camera del drone">
                             <h4 style="color: var(--accent-color); font-size: 0.8rem;">CAMERA</h4>
                             <p style="font-size: 1.4rem; font-weight: 700;">4K / 30fps</p>
+                            <span class="dv-feature-hint"><i class="fas fa-magnifying-glass-plus"></i> Zoom sulla camera</span>
                         </div>
                         <div class="feature-card reveal reveal-up reveal-delay-2">
                             <h4 style="color: var(--accent-color); font-size: 0.8rem;">CATEGORIA</h4>
                             <p style="font-size: 1.4rem; font-weight: 700;">C0</p>
                         </div>
-                        <div class="feature-card reveal reveal-up reveal-delay-3">
+                        <div class="feature-card reveal reveal-up reveal-delay-3" data-drone-highlight="weight" tabindex="0" aria-label="Metti il drone su una bilancia e confrontalo con oggetti di uso comune">
                             <h4 style="color: var(--accent-color); font-size: 0.8rem;">PESO</h4>
-                            <p style="font-size: 1.4rem; font-weight: 700;">
-                                < 249g</p>
+                            <p style="font-size: 1.4rem; font-weight: 700;">&lt; 249g</p>
+                            <span class="dv-feature-hint"><i class="fas fa-scale-balanced"></i> Mettilo sulla bilancia</span>
                         </div>
-                        <div class="feature-card reveal reveal-up reveal-delay-4" data-drone-highlight="wind" tabindex="0" aria-label="Evidenzia le quattro eliche sulla foto del drone">
+                        <div class="feature-card reveal reveal-up reveal-delay-4" data-drone-highlight="wind" tabindex="0" aria-label="Simula il vento e mostra la stabilità del drone">
                             <h4 style="color: var(--accent-color); font-size: 0.8rem;">RESISTENZA VENTO</h4>
                             <p style="font-size: 1.4rem; font-weight: 700;">Livello 5</p>
+                            <span class="dv-feature-hint"><i class="fas fa-wind"></i> Simula il vento</span>
                         </div>
                     </div>
                 </div>
-                <div style="position: relative;" class="reveal reveal-right">
-                    <!-- Reliable Foldable Grey Drone Photo -->
-                    <div
-                        style="width: 100%; aspect-ratio: 1; background: radial-gradient(rgba(0, 210, 255, 0.2), transparent 70%); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: float 6s ease-in-out infinite;">
-                        <div class="drone-visual" id="drone-visual">
-                            <img src="../assets/images/DjiMini4K.png" alt="DJI Mini 4K">
-                            <svg class="drone-highlights" viewBox="0 0 2000 700" preserveAspectRatio="none" aria-hidden="true">
-                                <path class="drone-highlight drone-highlight--camera" d="M800 350 Q800 328 824 328 H974 Q1007 332 1007 364 V447 Q1007 478 978 482 H835 Q800 478 800 450 Z"></path>
-                                <g class="drone-highlight drone-highlight--propellers">
-                                    <ellipse cx="510" cy="280" rx="290" ry="105" transform="rotate(8 510 280)"></ellipse>
-                                    <ellipse cx="1340" cy="170" rx="320" ry="120" transform="rotate(-6 1340 170)"></ellipse>
-                                    <ellipse cx="820" cy="520" rx="250" ry="76" transform="rotate(7 820 520)"></ellipse>
-                                    <ellipse cx="1660" cy="440" rx="300" ry="78" transform="rotate(-4 1660 440)"></ellipse>
-                                </g>
-                            </svg>
+                <div class="reveal reveal-right dv-inspect-col">
+                    <div class="dv-inspect" data-mode="idle">
+                        <canvas class="dv-wind-canvas" aria-hidden="true"></canvas>
+                        <div class="dv-inspect-drone">
+                            <div class="dv-inspect-float">
+                                <img src="../assets/images/DjiMini4K.png" alt="DJI Mini 4K in volo">
+                                <span class="dv-rotor" style="--x: 21%; --y: 39%;" aria-hidden="true"></span>
+                                <span class="dv-rotor" style="--x: 72%; --y: 26%;" aria-hidden="true"></span>
+                                <span class="dv-rotor" style="--x: 40%; --y: 74%;" aria-hidden="true"></span>
+                                <span class="dv-rotor" style="--x: 74.5%; --y: 64%;" aria-hidden="true"></span>
+                            </div>
                         </div>
+                        <div class="dv-inspect-hud" aria-hidden="true">
+                            <span class="dv-vf-corner tl"></span>
+                            <span class="dv-vf-corner tr"></span>
+                            <span class="dv-vf-corner bl"></span>
+                            <span class="dv-vf-corner br"></span>
+                            <span class="dv-inspect-label" data-inspect-label>Ispezione · vista completa</span>
+
+                            <div class="dv-cam-overlay">
+                                <div class="dv-focus"><span></span><span></span><span></span><span></span></div>
+                                <span class="dv-focus-tag">AF · LOCK</span>
+                                <ul class="dv-cam-specs">
+                                    <li><span>Sensore</span><b>1/2.3" CMOS</b></li>
+                                    <li><span>Video</span><b>4K / 30fps</b></li>
+                                    <li><span>Foto</span><b>12 MP</b></li>
+                                    <li><span>Gimbal</span><b>3 assi</b></li>
+                                </ul>
+                            </div>
+
+                            <div class="dv-wind-overlay">
+                                <div class="dv-wind-panel">
+                                    <span class="dv-wind-arrow"><i class="fas fa-arrow-right-long"></i></span>
+                                    <div>
+                                        <small>Vento da <b data-wind-from>Ovest</b></small>
+                                        <strong><b data-wind-speed>0</b> km/h</strong>
+                                    </div>
+                                </div>
+                                <div class="dv-hold-box"></div>
+                                <div class="dv-wind-status">
+                                    <span><i class="fas fa-circle-check"></i> Posizione mantenuta</span>
+                                    <span>Deriva <b data-wind-drift>0.00</b> m</span>
+                                    <span>Livello 5 · fino a 38 km/h</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dv-scale">
+                            <div class="dv-scale-stage" aria-hidden="true">
+                                <div class="dv-scale-post"></div>
+                                <div class="dv-scale-beam">
+                                    <div class="dv-scale-hanger dv-scale-hanger--left">
+                                        <svg class="dv-scale-strings" viewBox="0 0 150 90" preserveAspectRatio="none"><path d="M75 0 L8 90 M75 0 L142 90"></path></svg>
+                                        <img class="dv-scale-drone" src="../assets/images/DjiMini4K.png" alt="">
+                                        <span class="dv-scale-pan"></span>
+                                        <span class="dv-scale-read" data-scale-drone>0 g</span>
+                                    </div>
+                                    <div class="dv-scale-hanger dv-scale-hanger--right">
+                                        <svg class="dv-scale-strings" viewBox="0 0 150 90" preserveAspectRatio="none"><path d="M75 0 L8 90 M75 0 L142 90"></path></svg>
+                                        <span class="dv-scale-item" data-scale-item></span>
+                                        <span class="dv-scale-pan"></span>
+                                        <span class="dv-scale-read" data-scale-object>— g</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="dv-scale-verdict" aria-live="polite"><span data-scale-verdict>Scegli un oggetto da mettere sull'altro piatto</span><small>249 g · sotto la soglia dei 250 g</small></p>
+                            <div class="dv-scale-objects" role="group" aria-label="Oggetti da confrontare con il drone">
+                                <button type="button" data-weight="230" data-icon="📱" data-name="uno smartphone grande" aria-pressed="false" aria-label="Confronta con uno smartphone grande, circa 230 grammi"><span aria-hidden="true">📱</span><small>~230 g</small></button>
+                                <button type="button" data-weight="250" data-icon="☕" data-name="un pacchetto di caffè da 250 g" data-default aria-pressed="false" aria-label="Confronta con un pacchetto di caffè da 250 g, circa 250 grammi"><span aria-hidden="true">☕</span><small>~250 g</small></button>
+                                <button type="button" data-weight="280" data-icon="🍊" data-name="un'arancia grande" aria-pressed="false" aria-label="Confronta con un'arancia grande, circa 280 grammi"><span aria-hidden="true">🍊</span><small>~280 g</small></button>
+                                <button type="button" data-weight="350" data-icon="🥤" data-name="una lattina da 33 cl" aria-pressed="false" aria-label="Confronta con una lattina da 33 cl, circa 350 grammi"><span aria-hidden="true">🥤</span><small>~350 g</small></button>
+                            </div>
+                        </div>
+                        <p class="dv-inspect-hint"><i class="fas fa-hand-pointer"></i> Passa o tocca <b>Camera</b>, <b>Peso</b> e <b>Resistenza vento</b></p>
                     </div>
                 </div>
             </div>
@@ -401,6 +392,7 @@
         }
     </style>
     <script src="../js/script.js"></script>
+    <script src="../js/immersive.js"></script>
     <script>
         // Tech Slider for Mobile
         const initTechSlider = () => {

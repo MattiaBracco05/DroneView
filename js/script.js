@@ -11,6 +11,43 @@ overlay.innerHTML = `
 `;
 document.body.appendChild(overlay);
 
+// Shared navbar: pages/navbar.html replaces <nav id="site-nav"> on every page.
+// Its links are written relative to the site root and resolved here.
+const siteRoot = new URL('../', document.currentScript.src);
+
+const loadNavbar = () => {
+    const placeholder = document.getElementById('site-nav');
+    if (!placeholder) return;
+
+    fetch(new URL('pages/navbar.html', siteRoot))
+        .then(response => response.ok ? response.text() : Promise.reject())
+        .then(html => {
+            const template = document.createElement('template');
+            template.innerHTML = html;
+            const nav = template.content.querySelector('nav');
+            const currentPath = location.pathname.replace(/\/$/, '/index.html');
+
+            nav.querySelectorAll('a[href]').forEach(link => {
+                const url = new URL(link.getAttribute('href'), siteRoot);
+                const samePage = url.pathname === currentPath;
+                // Anchors on the current page scroll smoothly instead of reloading
+                link.setAttribute('href', samePage && url.hash ? url.hash : url.href);
+                if (samePage && !url.hash && link.closest('.nav-links')) link.setAttribute('aria-current', 'page');
+            });
+
+            placeholder.replaceWith(nav);
+            initNav();
+            initThemeSwitcher();
+            initAnchorLinks();
+            initPageTransitions();
+        })
+        .catch(() => {
+            placeholder.innerHTML = `<div class="container"><div class="nav-container"><a href="${new URL('index.html', siteRoot).href}" class="logo"><span class="logo-word"><span class="logo-drone">DRONE</span><span class="logo-view">VIEW</span></span></a></div></div>`;
+        });
+};
+
+loadNavbar();
+
 // Initialize everything
 document.addEventListener('DOMContentLoaded', () => {
     initNav();
@@ -20,27 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeroParticles();
     initVideoHudPlayers();
     initBackgroundVideo();
-    initDroneHighlights();
 });
-
-const initDroneHighlights = () => {
-    const showcase = document.querySelector('.drone-showcase');
-    if (!showcase) return;
-
-    showcase.querySelectorAll('[data-drone-highlight]').forEach((card) => {
-        const activate = () => {
-            showcase.dataset.highlight = card.dataset.droneHighlight;
-        };
-        const deactivate = () => {
-            if (!card.matches(':hover, :focus')) delete showcase.dataset.highlight;
-        };
-
-        card.addEventListener('pointerenter', activate);
-        card.addEventListener('pointerleave', deactivate);
-        card.addEventListener('focus', activate);
-        card.addEventListener('blur', deactivate);
-    });
-};
 
 const initBackgroundVideo = () => {
     const video = document.getElementById('bg-video');
@@ -283,10 +300,10 @@ function initCustomCursor() {
         previousX = e.clientX;
     });
 
-    const interactiveElements = document.querySelectorAll('a, button, .gallery-item, .accessory-card, .feature-card, .social-card, .radar-waypoint');
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    // Delegated, so elements injected later (navbar, footer) get the hover state too
+    const interactiveSelector = 'a, button, .gallery-item, .accessory-card, .feature-card, .social-card, .radar-waypoint';
+    document.addEventListener('mouseover', (e) => {
+        cursor.classList.toggle('hover', Boolean(e.target.closest(interactiveSelector)));
     });
 }
 
@@ -352,7 +369,9 @@ document.addEventListener('DOMContentLoaded', initPageTransitions);
 initPageTransitions();
 
 // Smooth scrolling and Takeoff Animation
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+const initAnchorLinks = () => document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    if (anchor.dataset.anchorInitialized) return;
+    anchor.dataset.anchorInitialized = 'true';
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const targetId = this.getAttribute('href');
@@ -407,6 +426,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+initAnchorLinks();
 
 // Reveal animations on scroll
 const revealObserverOptions = {

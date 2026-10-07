@@ -7,6 +7,7 @@
     <title>Drone View | Fotografia Aerea e Video</title>
     <meta name="description" content="Portfolio fotografico e video realizzato con DJI Mini 4K. Esplora il mondo dall'alto con scorci cinematici e paesaggi unici.">
     <meta name="theme-color" content="#050505">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo-mark.svg">
     <meta property="og:title" content="Drone View | Fotografia Aerea e Video">
     <meta property="og:description" content="Portfolio fotografico e video realizzato con DJI Mini 4K. Esplora il mondo dall'alto con scorci cinematici e paesaggi unici.">
     <meta property="og:type" content="website">
@@ -15,50 +16,72 @@
     <link rel="canonical" href="https://www.droneview.it/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/immersive.css">
 </head>
 
 <body>
 
-    <nav>
-        <div class="container">
-            <div class="nav-container">
-                <a href="index.html" class="logo">DRONE VIEW</a>
-                <div class="hud-theme-switcher" aria-label="HUD Theme Switcher">
-                    <button class="theme-btn active" data-set-theme="cyan" title="Ciano Neon">
-                        <span class="theme-dot cyan"></span>
-                    </button>
-                    <button class="theme-btn" data-set-theme="amber" title="Ambra Tattico">
-                        <span class="theme-dot amber"></span>
-                    </button>
-                    <button class="theme-btn" data-set-theme="green" title="Visione Notturna">
-                        <span class="theme-dot green"></span>
-                    </button>
-                </div>
-                <button class="nav-toggle" aria-label="Toggle menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <ul class="nav-links">
-                    <li><a href="#gallery">Galleria</a></li>
-                    <li><a href="pages/servizi.html">Servizi</a></li>
-                    <li><a href="pages/flotta.html">Flotta</a></li>
-                    <li><a href="pages/contatti.html">Contatti</a></li>
-                </ul>
+    <nav id="site-nav" aria-label="Navigazione principale"></nav>
+
+    <header class="hero dv-hero">
+        <div class="dv-hero-bg" aria-hidden="true"></div>
+        <canvas id="hero-particles" class="hero-particles" aria-hidden="true"></canvas>
+
+        <div class="dv-viewfinder" aria-hidden="true">
+            <span class="dv-vf-corner tl"></span>
+            <span class="dv-vf-corner tr"></span>
+            <span class="dv-vf-corner bl"></span>
+            <span class="dv-vf-corner br"></span>
+            <div class="dv-vf-top">
+                <span><span class="dv-rec-dot"></span> IN VOLO</span>
+                <span>ISO 100 · 1/500 · F1.7</span>
+                <span>4K · 30 FPS</span>
+            </div>
+            <div class="dv-horizon"></div>
+            <div class="dv-reticle"></div>
+            <div class="dv-pitch-ladder">
+                <span>+10</span>
+                <span>0</span>
+                <span>-10</span>
+                <span>-20</span>
+            </div>
+            <div class="dv-vf-bottom">
+                <span>GIMBAL −12°</span>
+                <span>WB AUTO · D-LOG</span>
+                <span>SD 64GB</span>
             </div>
         </div>
-    </nav>
 
-    <header class="hero">
-        <canvas id="hero-particles" class="hero-particles" aria-hidden="true"></canvas>
-        <div class="hero-content reveal reveal-up">
+        <div class="hero-content">
             <span class="hero-tagline">Esplorando l'orizzonte</span>
             <h1>Prospettive Elevate</h1>
             <p>Catturando la bellezza del mondo da un punto di vista unico.</p>
             <a href="#gallery" class="btn btn-primary">Esplora Lavori</a>
         </div>
+
+        <a href="#ascent" class="dv-scroll-cue">Scorri per decollare <i></i></a>
     </header>
+
+    <!-- Scroll-driven climb from ground level to 120 m -->
+    <section class="dv-ascent" id="ascent" aria-label="Decollo: la prospettiva cambia salendo di quota">
+        <div class="dv-ascent-sticky">
+            <div class="dv-ascent-img" role="img" aria-label="Vista zenitale della piazza durante il Raduno Paesana 2026"></div>
+            <div class="dv-ascent-grid" aria-hidden="true"></div>
+            <span class="dv-ascent-tag" aria-hidden="true">Camera · Nadir 90°</span>
+            <div class="dv-ascent-hud" aria-hidden="true">
+                <div class="dv-ascent-bar"><span></span></div>
+                <div class="dv-ascent-alt"><span>ALTITUDINE</span><b data-ascent-alt>0</b><em>m</em></div>
+            </div>
+            <div class="dv-ascent-captions">
+                <p data-at="0"><small>00 · Decollo</small>Tutto parte da terra.</p>
+                <p data-at="0.34"><small>01 · Salita</small>Poi la prospettiva cambia.</p>
+                <p data-at="0.7"><small>02 · Quota massima</small>A 120 metri, il mondo diventa una mappa.</p>
+            </div>
+        </div>
+    </section>
 
     <!-- Cinematic Video Break -->
     <section class="video-break">
@@ -75,27 +98,89 @@
     <section id="gallery" class="section">
         <div class="container">
             <div class="section-header reveal reveal-up">
-                <h2 class="section-title">Galleria Fotografica</h2>
-                <p style="color: var(--text-secondary)">Una collezione di scatti aerei in 4K.</p>
+                <span class="section-kicker">Registro missioni</span>
+                <h2 class="section-title">Scegli la tua missione</h2>
+                <p style="color: var(--text-secondary)">Ogni reportage è un volo: video, foto aeree e la mappa radar dei punti di ripresa.</p>
             </div>
-            <div class="grid" style="max-width: 1000px; margin: 0 auto;">
-                <a href="pages/zante.html" class="gallery-item reveal reveal-up">
-                    <img src="assets/images/Place/Zante.avif" alt="Zante - Navagio Beach">
-                    <div class="gallery-overlay">
-                        <h3>Zante</h3>
-                        <p>Esplora la bellezza ionica.</p>
-                    </div>
-                </a>
-                <a href="pages/radunopaesana2026.html" class="gallery-item paesana-home-card reveal reveal-up" aria-label="Apri la galleria Raduno Paesana 2026">
-                    <div class="gallery-overlay">
-                        <h3>Raduno Paesana 2026</h3>
-                        <p>Scopri il reportage aereo.</p>
-                    </div>
-                </a>
+            <div class="dv-missions">
+                <div class="reveal reveal-up">
+                    <a href="pages/zante.html" class="dv-mission" aria-label="Apri la missione Zante">
+                        <div class="dv-mission-img" style="background-image: url('assets/images/Place/Zante.avif')"></div>
+                        <span class="dv-mission-target" aria-hidden="true"></span>
+                        <div class="dv-mission-head"><span>Missione 01</span><span>37.78°N · 20.89°E</span></div>
+                        <div class="dv-mission-body">
+                            <h3>Zante</h3>
+                            <p>Acque turchesi, falesie bianche e il tramonto sull'Ionio visto dall'alto.</p>
+                            <div class="dv-mission-tags"><span>Grecia</span><span>Mare</span><span>Radar di volo</span></div>
+                            <span class="dv-mission-cta">Avvia missione <i class="fas fa-paper-plane"></i></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="reveal reveal-up reveal-delay-2">
+                    <a href="pages/radunopaesana2026.html" class="dv-mission" aria-label="Apri la missione Raduno Paesana 2026">
+                        <div class="dv-mission-img" style="background-image: url('assets/images/Place/RadunoPaesana2026.avif')"></div>
+                        <span class="dv-mission-target" aria-hidden="true"></span>
+                        <div class="dv-mission-head"><span>Missione 02</span><span>44.68°N · 7.27°E</span></div>
+                        <div class="dv-mission-body">
+                            <h3>Raduno Paesana 2026</h3>
+                            <p>Il raduno raccontato dal cielo: piazze, campanile e riprese dall'alto.</p>
+                            <div class="dv-mission-tags"><span>Piemonte</span><span>Evento</span><span>Reportage</span></div>
+                            <span class="dv-mission-cta">Avvia missione <i class="fas fa-paper-plane"></i></span>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- Interactive 360° sphere panorama -->
+    <section id="pano360" class="section dv-pano-section">
+        <div class="container">
+            <div class="section-header reveal reveal-up">
+                <span class="section-kicker">Esperienza interattiva</span>
+                <h2 class="section-title">Prendi i comandi</h2>
+                <p>Panorama sferico a 360° scattato in volo sopra Zante al tramonto. Trascina per guardarti intorno, zooma e scatta la tua foto ricordo.</p>
+            </div>
+            <div class="dv-pano reveal reveal-up" data-pano-src="assets/Zante/images/Panoramica.avif" tabindex="0" aria-label="Panorama a 360 gradi di Zante. Usa le frecce per guardarti intorno, più e meno per lo zoom.">
+                <canvas class="dv-pano-canvas"></canvas>
+                <div class="dv-pano-loading">Collegamento video in corso<i></i></div>
+                <div class="dv-pano-hud" aria-hidden="true">
+                    <div class="dv-pano-compass"><div class="dv-pano-compass-tape"></div></div>
+                    <div class="dv-pano-hdg" data-pano="hdg">000°</div>
+                    <div class="dv-pano-readout">
+                        <span>GIMBAL<b data-pano="pitch">0°</b></span>
+                        <span>ZOOM<b data-pano="zoom">1.0x</b></span>
+                        <span>ALT<b>101 m</b></span>
+                    </div>
+                    <span class="dv-pano-live"><span class="dv-rec-dot"></span> LIVE 360°</span>
+                    <div class="dv-pano-frame"></div>
+                    <div class="dv-pano-reticle"></div>
+                    <div class="dv-pano-hint"><i class="fas fa-hand-pointer"></i> Trascina per esplorare</div>
+                </div>
+                <div class="dv-pano-controls">
+                    <button type="button" data-pano-action="zoom-out" aria-label="Riduci zoom">−</button>
+                    <button type="button" data-pano-action="zoom-in" aria-label="Aumenta zoom">+</button>
+                    <button type="button" data-pano-action="shot" class="dv-shutter" aria-label="Scatta una foto"><span></span></button>
+                    <button type="button" data-pano-action="auto" aria-label="Rotazione automatica"><i class="fas fa-rotate"></i></button>
+                    <button type="button" data-pano-action="gyro" aria-label="Usa il giroscopio" aria-pressed="false" hidden><i class="fas fa-mobile-screen"></i></button>
+                    <button type="button" data-pano-action="fullscreen" aria-label="Schermo intero"><i class="fas fa-expand"></i></button>
+                </div>
+                <div class="dv-pano-flash" aria-hidden="true"></div>
+            </div>
+            <div class="dv-shots" aria-live="polite">
+                <p class="dv-shots-empty"><i class="fas fa-circle"></i> I tuoi scatti appariranno qui · clicca per scaricarli</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="dv-specs" aria-label="Il drone in numeri">
+        <div class="container dv-specs-grid">
+            <div class="dv-spec reveal reveal-up"><b data-counter="249" data-suffix=" g">0 g</b><span>Peso al decollo</span></div>
+            <div class="dv-spec reveal reveal-up reveal-delay-1"><b data-counter="4" data-suffix="K">0K</b><span>Video Ultra HD</span></div>
+            <div class="dv-spec reveal reveal-up reveal-delay-2"><b data-counter="31" data-suffix="'">0'</b><span>Autonomia di volo</span></div>
+            <div class="dv-spec reveal reveal-up reveal-delay-3"><b data-counter="3" data-suffix=" assi">0 assi</b><span>Gimbal stabilizzato</span></div>
+        </div>
+    </section>
 
     <section class="section home-feature-section home-feature-section-services">
         <div class="container">
@@ -128,9 +213,23 @@
         </div>
     </section>
 
+    <section class="dv-cta">
+        <div class="dv-cta-radar" aria-hidden="true"></div>
+        <div class="container reveal reveal-up">
+            <span class="section-kicker">Prossima missione</span>
+            <h2>Il tuo progetto,<br>visto dall'alto.</h2>
+            <p>Eventi, immobili, territorio o contenuti social: raccontami l'idea e pianifichiamo insieme il volo.</p>
+            <div class="dv-cta-actions">
+                <a href="pages/contatti.html" class="btn btn-primary btn-lg">Pianifica il volo</a>
+                <a href="pages/servizi.html" class="btn btn-ghost">Vedi i servizi</a>
+            </div>
+        </div>
+    </section>
+
     <footer id="site-footer"></footer>
 
     <script src="js/script.js"></script>
+    <script src="js/immersive.js"></script>
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const footer = document.getElementById('site-footer');

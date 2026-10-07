@@ -7,46 +7,22 @@
     <title>Drone View | Missione Valle Po</title>
     <meta name="description" content="Missione Valle Po: immagini e video aerei delle Alpi piemontesi tra cieli innevati, boschi e paesaggi montani.">
     <meta name="theme-color" content="#050505">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo-mark.svg">
     <meta property="og:title" content="Drone View | Missione Valle Po">
     <meta property="og:description" content="Missione Valle Po: immagini e video aerei delle Alpi piemontesi tra cieli innevati, boschi e paesaggi montani.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.droneview.it/pages/vallepo.html">
     <meta property="og:image" content="https://www.droneview.it/assets/images/Place/VallePo.jpg">
     <link rel="canonical" href="https://www.droneview.it/pages/vallepo.html">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/immersive.css">
 </head>
 
 <body>
 
-    <nav>
-        <div class="container">
-            <div class="nav-container">
-                <a href="../index.html" class="logo">DRONE VIEW</a>
-                <div class="hud-theme-switcher" aria-label="HUD Theme Switcher">
-                    <button class="theme-btn active" data-set-theme="cyan" title="Ciano Neon">
-                        <span class="theme-dot cyan"></span>
-                    </button>
-                    <button class="theme-btn" data-set-theme="amber" title="Ambra Tattico">
-                        <span class="theme-dot amber"></span>
-                    </button>
-                    <button class="theme-btn" data-set-theme="green" title="Visione Notturna">
-                        <span class="theme-dot green"></span>
-                    </button>
-                </div>
-                <button class="nav-toggle" aria-label="Toggle menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <ul class="nav-links">
-                    <li><a href="../index.html#gallery">Galleria</a></li>
-                    <li><a href="servizi.html">Servizi</a></li>
-                    <li><a href="flotta.html">Flotta</a></li>
-                    <li><a href="contatti.html">Contatti</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <nav id="site-nav" aria-label="Navigazione principale"></nav>
 
     <header class="mission-hero vallepo-hero">
         <div class="hud-overlay">
@@ -192,6 +168,7 @@
     <footer id="site-footer"></footer>
 
     <script src="../js/script.js"></script>
+    <script src="../js/immersive.js"></script>
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const footer = document.getElementById('site-footer');

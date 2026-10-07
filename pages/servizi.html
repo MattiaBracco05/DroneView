@@ -7,6 +7,7 @@
     <title>Drone View | Servizi Aerei</title>
     <meta name="description" content="Scopri i servizi di Drone View: video e fotografia aerea per eventi, immobili, turismo e contenuti social.">
     <meta name="theme-color" content="#050505">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo-mark.svg">
     <meta property="og:title" content="Drone View | Servizi Aerei">
     <meta property="og:description" content="Video e fotografia aerea per eventi, immobili, turismo e contenuti social.">
     <meta property="og:type" content="website">
@@ -15,39 +16,14 @@
     <link rel="canonical" href="https://www.droneview.it/pages/servizi.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/immersive.css">
 </head>
 
 <body>
-    <nav>
-        <div class="container">
-            <div class="nav-container">
-                <a href="../index.html" class="logo">DRONE VIEW</a>
-                <div class="hud-theme-switcher" aria-label="Seleziona tema">
-                    <button class="theme-btn active" data-set-theme="cyan" title="Ciano Neon" aria-label="Tema ciano">
-                        <span class="theme-dot cyan"></span>
-                    </button>
-                    <button class="theme-btn" data-set-theme="amber" title="Ambra Tattico" aria-label="Tema ambra">
-                        <span class="theme-dot amber"></span>
-                    </button>
-                    <button class="theme-btn" data-set-theme="green" title="Visione Notturna" aria-label="Tema verde">
-                        <span class="theme-dot green"></span>
-                    </button>
-                </div>
-                <button class="nav-toggle" aria-label="Apri menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <ul class="nav-links">
-                    <li><a href="../index.html#gallery">Galleria</a></li>
-                    <li><a href="servizi.html" aria-current="page">Servizi</a></li>
-                    <li><a href="flotta.html">Flotta</a></li>
-                    <li><a href="contatti.html">Contatti</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <nav id="site-nav" aria-label="Navigazione principale"></nav>
 
     <main>
         <header class="services-hero">
@@ -65,45 +41,50 @@
                     <h2 class="section-title">Per cosa puoi contattarmi</h2>
                     <p class="services-intro">Scegli il servizio più adatto o scrivimi per costruire insieme la soluzione giusta.</p>
                 </div>
-                <div class="services-grid" role="region" aria-label="Elenco dei servizi" tabindex="0">
-                    <article class="service-card reveal reveal-up">
+                <div class="dv-orbit reveal reveal-up" role="region" aria-label="Servizi in orbita intorno al drone. Usa le frecce per ruotare.">
+                    <div class="dv-orbit-path" aria-hidden="true"></div>
+                    <div class="dv-orbit-path dv-orbit-path--inner" aria-hidden="true"></div>
+                    <div class="dv-orbit-drone" aria-hidden="true">
+                        <img src="../assets/images/DjiMini4K.png" alt="">
+                        <span class="dv-orbit-glow"></span>
+                    </div>
+                    <div class="dv-orbit-cards">
+                        <article class="service-card dv-orbit-card" tabindex="0">
                         <span class="service-icon"><i class="fas fa-video" aria-hidden="true"></i></span>
                         <h3>Video aerei</h3>
                         <p>Riprese dinamiche e prospettive cinematografiche per presentare un luogo o dare forma alla tua storia.</p>
                     </article>
-                    <article class="service-card reveal reveal-up">
+                        <article class="service-card dv-orbit-card" tabindex="0">
                         <span class="service-icon"><i class="fas fa-camera" aria-hidden="true"></i></span>
                         <h3>Fotografia aerea</h3>
                         <p>Scatti dall'alto per valorizzare dettagli, paesaggi e punti di vista difficili da cogliere da terra.</p>
                     </article>
-                    <article class="service-card reveal reveal-up">
+                        <article class="service-card dv-orbit-card" tabindex="0">
                         <span class="service-icon"><i class="fas fa-champagne-glasses" aria-hidden="true"></i></span>
                         <h3>Eventi e manifestazioni</h3>
                         <p>Immagini d'insieme e momenti speciali per raccontare l'atmosfera di eventi e manifestazioni.</p>
                     </article>
-                    <article class="service-card reveal reveal-up">
+                        <article class="service-card dv-orbit-card" tabindex="0">
                         <span class="service-icon"><i class="fas fa-house" aria-hidden="true"></i></span>
                         <h3>Immobili e strutture</h3>
                         <p>Riprese e fotografie per mostrare edifici, proprietà e strutture nel loro contesto.</p>
                     </article>
-                    <article class="service-card reveal reveal-up">
+                        <article class="service-card dv-orbit-card" tabindex="0">
                         <span class="service-icon"><i class="fas fa-mountain-sun" aria-hidden="true"></i></span>
                         <h3>Turismo e territorio</h3>
                         <p>Nuovi sguardi su paesaggi, destinazioni e luoghi, per comunicarne la bellezza e l'identità.</p>
                     </article>
-                    <article class="service-card reveal reveal-up">
+                        <article class="service-card dv-orbit-card" tabindex="0">
                         <span class="service-icon"><i class="fas fa-mobile-screen-button" aria-hidden="true"></i></span>
                         <h3>Contenuti per social</h3>
                         <p>Video e immagini d'impatto, pensati per raccontare la tua attività sui canali digitali.</p>
                     </article>
-                </div>
-                <div class="services-pagination" role="group" aria-label="Seleziona un servizio">
-                    <button class="services-pagination-dot" type="button" aria-label="Mostra Video aerei" aria-current="true"></button>
-                    <button class="services-pagination-dot" type="button" aria-label="Mostra Fotografia aerea"></button>
-                    <button class="services-pagination-dot" type="button" aria-label="Mostra Eventi e manifestazioni"></button>
-                    <button class="services-pagination-dot" type="button" aria-label="Mostra Immobili e strutture"></button>
-                    <button class="services-pagination-dot" type="button" aria-label="Mostra Turismo e territorio"></button>
-                    <button class="services-pagination-dot" type="button" aria-label="Mostra Contenuti per social"></button>
+                    </div>
+                    <div class="dv-orbit-controls">
+                        <button type="button" class="dv-orbit-btn" data-orbit="prev" aria-label="Servizio precedente"><i class="fas fa-chevron-left"></i></button>
+                        <span class="dv-orbit-status" aria-live="polite"></span>
+                        <button type="button" class="dv-orbit-btn" data-orbit="next" aria-label="Servizio successivo"><i class="fas fa-chevron-right"></i></button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -127,54 +108,9 @@
     <footer id="site-footer"></footer>
 
     <script src="../js/script.js"></script>
+    <script src="../js/immersive.js"></script>
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            const servicesGrid = document.querySelector('.services-grid');
-            const serviceCards = servicesGrid ? [...servicesGrid.querySelectorAll('.service-card')] : [];
-            const paginationDots = [...document.querySelectorAll('.services-pagination-dot')];
-
-            if (servicesGrid && serviceCards.length === paginationDots.length) {
-                let scrollFrame = null;
-
-                const updateActiveDot = () => {
-                    const gridLeft = servicesGrid.getBoundingClientRect().left;
-                    const activeIndex = serviceCards.reduce((closestIndex, card, index) => {
-                        const closestDistance = Math.abs(serviceCards[closestIndex].getBoundingClientRect().left - gridLeft);
-                        const distance = Math.abs(card.getBoundingClientRect().left - gridLeft);
-                        return distance < closestDistance ? index : closestIndex;
-                    }, 0);
-
-                    paginationDots.forEach((dot, index) => {
-                        if (index === activeIndex) {
-                            dot.setAttribute('aria-current', 'true');
-                        } else {
-                            dot.removeAttribute('aria-current');
-                        }
-                    });
-                };
-
-                servicesGrid.addEventListener('scroll', () => {
-                    if (scrollFrame !== null) return;
-                    scrollFrame = requestAnimationFrame(() => {
-                        updateActiveDot();
-                        scrollFrame = null;
-                    });
-                }, { passive: true });
-
-                paginationDots.forEach((dot, index) => {
-                    dot.addEventListener('click', () => {
-                        const gridLeft = servicesGrid.getBoundingClientRect().left;
-                        const cardLeft = serviceCards[index].getBoundingClientRect().left;
-                        servicesGrid.scrollTo({
-                            left: servicesGrid.scrollLeft + cardLeft - gridLeft,
-                            behavior: 'smooth'
-                        });
-                    });
-                });
-
-                updateActiveDot();
-            }
-
             const footer = document.getElementById('site-footer');
             if (!footer) return;
             fetch('footer.html')

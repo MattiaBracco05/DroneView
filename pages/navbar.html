@@ -1,0 +1,47 @@
+<!-- Shared navbar, injected by js/script.js into <nav id="site-nav">.
+     Links are relative to the site root; the loader resolves them for each page. -->
+<nav id="site-nav" aria-label="Navigazione principale">
+    <div class="container">
+        <div class="nav-container">
+            <a href="index.html" class="logo" aria-label="Drone View, torna alla home">
+                <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="logo-gradient" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" class="logo-stop-1"></stop>
+                            <stop offset="1" class="logo-stop-2"></stop>
+                        </linearGradient>
+                    </defs>
+                    <path class="logo-arms" d="M18.5 18.5 L11 11 M29.5 18.5 L37 11 M18.5 29.5 L11 37 M29.5 29.5 L37 37"></path>
+                    <circle class="logo-rotor" cx="11" cy="11" r="7"></circle>
+                    <circle class="logo-rotor" cx="37" cy="11" r="7"></circle>
+                    <circle class="logo-rotor" cx="11" cy="37" r="7"></circle>
+                    <circle class="logo-rotor" cx="37" cy="37" r="7"></circle>
+                    <circle class="logo-lens" cx="24" cy="24" r="8"></circle>
+                    <circle class="logo-iris" cx="24" cy="24" r="3"></circle>
+                </svg>
+                <span class="logo-word"><span class="logo-drone">DRONE</span><span class="logo-view">VIEW</span></span>
+            </a>
+            <div class="hud-theme-switcher" aria-label="Seleziona tema">
+                <button class="theme-btn active" type="button" data-set-theme="cyan" title="Ciano Neon" aria-label="Tema ciano">
+                    <span class="theme-dot cyan"></span>
+                </button>
+                <button class="theme-btn" type="button" data-set-theme="amber" title="Ambra Tattico" aria-label="Tema ambra">
+                    <span class="theme-dot amber"></span>
+                </button>
+                <button class="theme-btn" type="button" data-set-theme="green" title="Visione Notturna" aria-label="Tema verde">
+                    <span class="theme-dot green"></span>
+                </button>
+            </div>
+            <button class="nav-toggle" type="button" aria-label="Apri menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html#gallery">Galleria</a></li>
+                <li><a href="index.html#pano360">360°</a></li>
+                <li><a href="pages/servizi.html">Servizi</a></li>
+                <li><a href="pages/flotta.html">Flotta</a></li>
+                <li><a href="pages/contatti.html">Contatti</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
